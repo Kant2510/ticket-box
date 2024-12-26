@@ -9,3 +9,5 @@ others
 .vercel
 .yarn.lock
 .prettierrc
+
+.vercel
