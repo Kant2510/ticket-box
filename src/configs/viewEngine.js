@@ -3,13 +3,12 @@ import morgan from 'morgan'
 import path from 'path'
 import compression from 'compression'
 import session from "express-session";
-import cors from 'cors'
+
 const configViewEngine = (app) => {
     const __dirname = path.resolve()
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, 'src', 'views'));
     app.use(express.static(path.join(__dirname, 'src', 'public')));
-    app.use(cors());
 
 
     app.use(compression());
