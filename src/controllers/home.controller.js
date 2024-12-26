@@ -2,7 +2,7 @@ import EventService from '../services/event.service.js'
 import TicketTypeService from '../services/ticket_type.service.js'
 
 const getHomepage = async (req, res) => {
-    try {
+    // try {
         // const events = await EventService.findRecomendedEvents()
         // const recommendTicketTypes = await TicketTypeService.findByRecommend()
         // const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
@@ -16,9 +16,9 @@ const getHomepage = async (req, res) => {
         //     res.render('index', { customer: null, events, nowShowing })
         // }
         res.render('index', { customer: null , events: null, nowShowing: null })
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to load events' })
-    }
+    // } catch (error) {
+    //     res.status(500).json({ error: 'Failed to load events' })
+    // }
 }
 
 export default getHomepage
