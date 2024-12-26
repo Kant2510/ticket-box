@@ -15,6 +15,5 @@
   "functions": {
     "server.js": {
       "timeout": 30
-    }
-  }
+    }  }
 }
