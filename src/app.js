@@ -2,7 +2,7 @@
 import express from 'express';
 import configViewEngine from './configs/viewEngine.js';
 import indexRoutes from './routes/index.js';
-import('./dbs/init.mongodb.js')
+// import('./dbs/init.mongodb.js')
 import accessController  from './controllers/access.controller.js';
 
 
