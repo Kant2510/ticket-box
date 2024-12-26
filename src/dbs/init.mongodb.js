@@ -23,8 +23,6 @@ class Database {
         }
 
         mongoose.connect(connectString, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             maxPoolSize: 50 // TODO: Max connection
         })
             .then(() => {
