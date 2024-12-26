@@ -132,34 +132,6 @@
 <!--                    <small class="fa fa-user text-body"></small>-->
 <!--                </a>-->
 
-                <% if (!customer) { %>
-
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="/login">
-                        <small class="fa fa-user text-body"></small>
-                    </a>
-                <% } else { %>
-                    <!-- Show Login button if user is not logged in -->
-                    <!-- Show Profile dropdown menu if user is logged in -->
-                    <a class="btn-sm-square bg-white rounded-circle ms-3 profile">
-                        <small class="fa fa-user text-body"></small>
-                    </a>
-                    <div class="profile-dropdown profile">
-                        <ul class="dropdown-menu" style="display: none;">
-                            <li>
-                                <a class="dropdown-item" href="/profile">
-                                    <strong><%= customer.email %></strong><br>
-                                    <small>View profile</small>
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="/logout">
-                                    Log out
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                <% } %>
 
 
                 <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
