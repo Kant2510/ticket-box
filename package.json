@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/",
   "scripts": {
-    "start": "nodemon --inspect --env-file=.env server.js",
+    "start": "nodemon server.js",
     "dev": "cross-env NODE_ENV=dev nodemon --inspect server.js",
     "pro": "cross-env NODE_ENV=pro node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
