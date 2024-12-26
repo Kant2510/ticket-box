@@ -11,7 +11,6 @@ const configViewEngine = (app) => {
     app.use(express.static(path.join(__dirname, 'src', 'public')));
 
 
-
     app.use(compression());
     // HTTP logger
     app.use(morgan('tiny'));

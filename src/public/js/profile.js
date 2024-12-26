@@ -1,18 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
     const avatar = document.querySelector(".profile");
-    const userInfo = document.querySelector(".dropdown-menu");
+    const userInfo = document.querySelector(".profile-dropdown-menu"); // Updated selector
 
-    // Toggle menu display on avatar click
-    avatar.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event propagation
-        const isHidden = userInfo.style.display === "none" || !userInfo.style.display;
-        userInfo.style.display = isHidden ? "block" : "none";
-    });
+    if (avatar && userInfo) {
+        // Toggle menu display on avatar click
+        avatar.addEventListener("click", function (event) {
+            event.stopPropagation(); // Prevent event propagation
+            userInfo.classList.toggle("show-menu"); // Toggle class to show/hide the menu
+        });
 
-    // Close the menu when clicking outside
-    document.addEventListener("click", function (event) {
-        if (!userInfo.contains(event.target) && event.target !== avatar) {
-            userInfo.style.display = "none";
-        }
-    });
+        // Close the menu when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!userInfo.contains(event.target) && event.target !== avatar) {
+                userInfo.classList.remove("show-menu"); // Hide the menu if clicked outside
+            }
+        });
+    }
 });

@@ -6,3 +6,8 @@ roadmap.txt
 others
 .vscode
 .idea
+.vercel
+.yarn.lock
+.prettierrc
+
+.vercel

@@ -4,7 +4,7 @@
 import bcrypt from 'bcrypt';
 // TODO: Internal modules
 import customerModel from '../models/customer.model.js';
-import KeyTokenService from './keytoken.service.js';
+import KeyTokenService from './keyToken.service.js';
 // Importing from auth.js
 import { createTokenPair, verifyJWT } from '../middlewares/auth.js';
 import { getObjectData, getRandomString } from '../utils/index.js';
