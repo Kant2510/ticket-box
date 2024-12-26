@@ -18,7 +18,7 @@ router.get('/', getHomepage)
 router.get('/about', getAbout)
 router.get('/contact', getContact)
 router.get('/product', getProduct)
-// router.get('/detail', eventDetailController.getEventDetail)
+router.get('/detail', eventDetailController.getEventDetail)
 
 // accessRoutes
 router.use('/', authRoutes)
