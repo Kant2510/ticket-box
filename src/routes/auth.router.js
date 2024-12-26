@@ -11,16 +11,16 @@ router.get('/signup', accessController.getSignUp)
 
 // POST
 // TODO: route sign up
-router.post('/api/v1/auth/signup', forwardError(accessController.signUp))
+router.post('/signup', forwardError(accessController.signUp))
 
 // TODO: route login
 router.post('/login', forwardError(accessController.login))
 
 // TODO: route logout
 // TODO: middleware authentication
-router.post('/api/v1/auth/logout', authenticationV2, forwardError(accessController.logout))
+router.post('/logout', authenticationV2, forwardError(accessController.logout))
 
 // TODO: route refresh token
-router.post('/api/v1/auth/refreshToken', authenticationV2, forwardError(accessController.refreshToken))
+router.post('/refreshToken', authenticationV2, forwardError(accessController.refreshToken))
 
 export default router

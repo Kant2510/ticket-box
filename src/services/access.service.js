@@ -30,7 +30,7 @@ class AccessService {
     // TODO: Step 1: Check email is existed
     const foundCustomer = await customerService.findByEmail({ email })
     if (!foundCustomer) {
-      throw new NotFoundRequest('Shop is not registered')
+      throw new NotFoundRequest('Customer is not registered')
     }
 
     // TODO: Step 2: Check password
