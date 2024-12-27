@@ -5,9 +5,13 @@ import configViewEngine from './configs/viewEngine.js';
 import indexRoutes from './routes/index.js';
 import accessController  from './controllers/access.controller.js';
 import'./dbs/init.mongodb.js'
+import path from "path";
 
 
 const app = express()
+app.set("view engine", "ejs")
+app.use(express.static(path.join(process.cwd(), 'src/public')));
+app.set('views', path.join(process.cwd(), 'src/views'));
 
 configViewEngine(app);
 app.use(indexRoutes)
