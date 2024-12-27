@@ -7,10 +7,10 @@ const server = app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 })
 
-process.on('SIGINT', (err, promise) => {
-    server.close(() => {
-        console.log(`Server stopped`);
-        process.exit(1);
-    })
-})
+// process.on('SIGINT', (err, promise) => {
+//     server.close(() => {
+//         console.log(`Server stopped`);
+//         process.exit(1);
+//     })
+// })
 
