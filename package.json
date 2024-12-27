@@ -40,8 +40,7 @@
     "faker": "^6.6.6",
     "mongodb": "^6.10.0",
     "mongose": "^0.0.2-security",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.1.7"
+    "morgan": "^1.10.0"
   },
   "type": "module"
 }
