@@ -6,11 +6,10 @@ import indexRoutes from './routes/index.js';
 import accessController  from './controllers/access.controller.js';
 import'./dbs/init.mongodb.js'
 import path from "path";
-
-
+const __dirname = path.resolve()
 const app = express()
 app.set("view engine", "ejs")
-app.use(express.static(path.join(process.cwd(), 'src/public')));
+app.use(express.static(path.join(__dirname, "src", 'public'))); // Thư mục public nằm ở root
 app.set('views', path.join(process.cwd(), 'src/views'));
 
 configViewEngine(app);
