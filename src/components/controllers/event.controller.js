@@ -10,66 +10,84 @@ class EventController {
     try {
       res.render('createEvent');
     } catch (error) {
-      throw new ApiError(HTTP_STATUS.INTERNAL_SERVER_ERROR, 'Error rendering event creation page');
+      console.error('Error rendering event creation page:', error);
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error rendering event creation page',
+        error: error.message
+      });
     }
   }
 
   // POST /event - Handle event creation
   async handleCreateEvent(req, res) {
     try {
+      console.log('Creating new event with data:', req.body);
+
       const {
         title,
         addressProvince,
         addressDetail,
         startDate,
         endDate,
+        eventLogo,
+        eventBanner,
+        organizerId,
         category,
         status,
-        ticketTypes,
-        organizerId,
         description,
         eventType,
         venueName,
         district,
-        eventImages
+        ticketTypes
       } = req.body;
+
+      // Validate ticket types
+      if (!ticketTypes || !Array.isArray(ticketTypes)) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: 'Ticket types must be an array'
+        });
+      }
 
       // Create new event instance
       const newEvent = new EventModel({
         title,
         addressProvince,
         addressDetail,
-        startDate: startDate ? new Date(startDate) : undefined,
-        endDate: endDate ? new Date(endDate) : undefined,
-        visitCount: 0,
-        category,
-        status,
-        ticketTypes: Array.isArray(ticketTypes) ? ticketTypes : [],
+        startDate,
+        endDate,
+        eventLogo,
+        eventBanner,
         organizerId,
+        category,
+        status: status || 'Draft',
         description,
         eventType,
         venueName,
         district,
-        eventImages: {
-          logo: eventImages?.logo,
-          banner: eventImages?.banner
-        }
+        ticketTypes: ticketTypes.map(ticket => ({
+          ticketTypeId: Math.random().toString(36).substring(7),
+          name: ticket.name,
+          quantity: Number(ticket.quantity),
+          price: Number(ticket.price),
+          description: ticket.description || ''
+        }))
       });
 
       // Save to database
       const savedEvent = await newEvent.save();
+      console.log('Event created successfully:', savedEvent);
 
-      // Return success response
       res.status(HTTP_STATUS.CREATED).json({
         message: 'Event created successfully',
         data: savedEvent
       });
 
     } catch (error) {
-      throw new ApiError(
-        error.status || HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        error.message || 'Error creating event'
-      );
+      console.error('Error creating event:', error);
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error creating event',
+        error: error.message
+      });
     }
   }
 
@@ -111,10 +129,10 @@ class EventController {
       });
 
     } catch (error) {
-      throw new ApiError(
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        'Error retrieving events'
-      );
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retrieving events',
+        error: error.message
+      });
     }
   }
 
@@ -126,7 +144,10 @@ class EventController {
       const event = await EventModel.findById(id);
       
       if (!event) {
-        throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Event not found');
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: 'Event not found',
+          error: 'Event not found'
+        });
       }
 
       // Increment visit count
@@ -139,10 +160,10 @@ class EventController {
       });
 
     } catch (error) {
-      throw new ApiError(
-        error.status || HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        'Error retrieving event'
-      );
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retrieving event',
+        error: error.message
+      });
     }
   }
 
@@ -167,7 +188,10 @@ class EventController {
       );
 
       if (!updatedEvent) {
-        throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Event not found');
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: 'Event not found',
+          error: 'Event not found'
+        });
       }
 
       res.status(HTTP_STATUS.OK).json({
@@ -176,10 +200,10 @@ class EventController {
       });
 
     } catch (error) {
-      throw new ApiError(
-        error.status || HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        'Error updating event'
-      );
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error updating event',
+        error: error.message
+      });
     }
   }
 
@@ -191,7 +215,10 @@ class EventController {
       const deletedEvent = await EventModel.findByIdAndDelete(id);
       
       if (!deletedEvent) {
-        throw new ApiError(HTTP_STATUS.NOT_FOUND, 'Event not found');
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: 'Event not found',
+          error: 'Event not found'
+        });
       }
 
       res.status(HTTP_STATUS.OK).json({
@@ -200,65 +227,63 @@ class EventController {
       });
 
     } catch (error) {
-      throw new ApiError(
-        error.status || HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        'Error deleting event'
-      );
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error deleting event',
+        error: error.message
+      });
     }
   }
-  async handleCreateEvent(req, res) {
+
+  // POST /event/:eventId/ticket - Add ticket type to event
+  async addTicketType(req, res) {
     try {
-      const {
-        title,
-        addressProvince,
-        addressDetail,
-        startDate,
-        endDate,
-        category,
-        status,
-        eventType,
-        venueName,
-        district,
-        description,
-        eventImages
-      } = req.body;
+      const { eventId } = req.params;
+      const { name, price, quantity, description } = req.body;
 
-      // Create new event instance
-      const newEvent = new EventModel({
-        title,
-        addressProvince,
-        addressDetail,
-        startDate: startDate ? new Date(startDate) : undefined,
-        endDate: endDate ? new Date(endDate) : undefined,
-        visitCount: 0,
-        category,
-        status: status || 'draft',
-        ticketTypes: [], // Will be added in step 2
-        eventType,
-        venueName,
-        district,
-        description,
-        eventImages: {
-          logo: eventImages?.logo || '',
-          banner: eventImages?.banner || ''
-        }
-      });
+      console.log('Adding ticket type to event:', eventId);
+      console.log('Ticket data:', req.body);
 
-      // Save to database
-      const savedEvent = await newEvent.save();
+      // Find event
+      const event = await EventModel.findById(eventId);
+      if (!event) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: 'Event not found'
+        });
+      }
 
-      // Return success response
-      res.status(HTTP_STATUS.CREATED).json({
-        message: 'Event created successfully',
-        data: savedEvent
+      // Ensure ticketTypes is an array
+      if (!Array.isArray(event.ticketTypes)) {
+        event.ticketTypes = [];
+      }
+
+      // Create new ticket
+      const newTicket = {
+        ticketTypeId: Math.random().toString(36).substring(7),
+        name,
+        price: Number(price),
+        quantity: Number(quantity),
+        description: description || ''
+      };
+
+      // Add to array
+      event.ticketTypes.push(newTicket);
+      
+      // Save changes
+      const updatedEvent = await event.save();
+      console.log('Ticket added successfully:', newTicket);
+      console.log('Updated event:', updatedEvent);
+
+      res.status(HTTP_STATUS.OK).json({
+        message: 'Ticket type added successfully',
+        data: updatedEvent
       });
 
     } catch (error) {
-      console.error('Error creating event:', error);
-      throw new ApiError(
-        error.status || HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        error.message || 'Error creating event'
-      );
+      console.error('Error adding ticket type:', error);
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: 'Error adding ticket type',
+        error: error.message
+      });
     }
   }
 }

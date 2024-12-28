@@ -15,7 +15,7 @@ import eventController from '../../controllers/event.controller.js'
 router.get('/login',accessController.getLogin)
 router.get('/signup',accessController.getSignUp)
 router.get('/admin', (req, res) => {
-    res.render('adminPage');
+    res.render('adminPage-create');
   });
 router.get('/event', eventController.createEvent);
 // POST

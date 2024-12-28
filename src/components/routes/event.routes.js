@@ -3,7 +3,7 @@ const router = express.Router();
 const eventController = require('../controllers/event.controller.js'); // import the controller
 
 // POST route to create a new event
-router.post('/', eventController.createEvent);
+router.post('/', eventController.handleCreateEvent);
 
 // PATCH route to update an existing event
 router.patch('/:eventId', eventController.updateEvent);
@@ -16,5 +16,8 @@ router.get('/:eventId', eventController.getEventById);
 
 // DELETE route to delete an event
 router.delete('/:eventId', eventController.deleteEvent);
+
+// POST route to add ticket type to event
+router.post('/:eventId/ticket', eventController.addTicketType);
 
 module.exports = router;

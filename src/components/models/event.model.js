@@ -1,6 +1,8 @@
-import  mongoose, {model, Schema} from 'mongoose';
-const DOCUMENT_NAME = 'EventModel';
+import mongoose, { Schema } from 'mongoose';
+
+const DOCUMENT_NAME = 'Event';
 const COLLECTION_NAME = 'Events';
+
 const eventSchema = new Schema({
   title: {
     type: String,
@@ -14,6 +16,18 @@ const eventSchema = new Schema({
     type: String,
     required: false
   },
+  eventLogo: {
+    type: String,
+    required: false
+  },
+  eventBanner: {
+    type: String,
+    required: false
+  },
+  organizerId: {
+    type: String,
+    required: false
+  },
   startDate: {
     type: Date,
     required: false
@@ -22,9 +36,9 @@ const eventSchema = new Schema({
     type: Date,
     required: false
   },
-  visitCount: {
+  visitCount : {
     type: Number,
-    required: false
+    default: 0
   },
   category: {
     type: String,
@@ -32,15 +46,7 @@ const eventSchema = new Schema({
   },
   status: {
     type: String,
-    required: false
-  },
-  ticketTypes: {
-    type: Array,
-    required: false
-  },
-  organizerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: false
+    default: 'Available'
   },
   description: {
     type: String,
@@ -58,21 +64,31 @@ const eventSchema = new Schema({
     type: String,
     required: false
   },
-  eventImages: {
-    logo: {
+  ticketTypes: [{
+    ticketTypeId: {
       type: String,
-      required: false
+      required: true
     },
-    banner: {
+    name: {
+      type: String,
+      required: true
+    },
+    quantity: {
+      type: Number,
+      required: true
+    },
+    price: {
+      type: Number,
+      required: true
+    },
+    description: {
       type: String,
       required: false
     }
-  }
+  }]
 }, {
   timestamps: true,
-  collection: COLLECTION_NAME,
+  collection: COLLECTION_NAME
 });
 
-const EventModel = model(DOCUMENT_NAME, eventSchema);
-
-export default EventModel;
+export default mongoose.model(DOCUMENT_NAME, eventSchema);
