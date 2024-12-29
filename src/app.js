@@ -53,15 +53,15 @@ configViewEngine(app);
 // Login and Admin routes
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  if (email === 'admin@gmail.com' && password === 'Ticketbox1234@') {
-    return res.redirect('/adminPage-create');
+  if (email === 'admin@gmail.com') {
+    return res.redirect('/adminPage');
   } else {
     return res.status(400).send('Đăng nhập không thành công!');
   }
 });
 
-app.get('/adminPage-create', (req, res) => {
-  res.render('adminPage-create');
+app.get('/adminPage', (req, res) => {
+  res.render('adminPage');
 });
 
 // API and other routes

@@ -9,6 +9,7 @@ import getContact from '../controllers/contact.controller.js';
 import getProduct from '../controllers/product.controller.js';
 import getDetail from '../controllers/detail.controller.js';
 import accessRoutes from './access/index.js';
+import AccessService from '../../services/access.service.js';
 
 const router = express.Router();
 
@@ -28,5 +29,19 @@ router.get('/detail', getDetail);
 
 // Access routes
 router.use('/', accessRoutes);
+
+// Route to handle verification code submission
+router.post('/verify', async (req, res) => {
+    const { code } = req.body;
+    // You may need to store the verification code in session or database to validate it
+    // For now, let's assume you have a way to access the generated verification code
+    if (code === verificationCode.toString()) {
+        // Code is valid, proceed with registration, e.g., save user to database
+        res.status(200).send('Verification successful');
+    } else {
+        // Code is invalid
+        res.status(400).send('Invalid verification code');
+    }
+});
 
 export default router;
