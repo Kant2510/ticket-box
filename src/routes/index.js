@@ -4,6 +4,7 @@
 import getHomepage from '../controllers/home.controller.js'
 import authRoutes from './auth.router.js'
 import eventRoutes from './event.router.js'
+import orderRoutes from './order.router.js'
 import getAbout from '../controllers/about.controller.js'
 import getContact from '../controllers/contact.controller.js'
 import getProduct from '../controllers/product.controller.js'
@@ -25,5 +26,8 @@ router.use('/', authRoutes)
 
 // eventRoutes
 router.use('/', eventRoutes)
+
+// orderRoutes
+router.use('/', orderRoutes)
 
 export default router

@@ -32,6 +32,14 @@ const getProduct = async (req, res) => {
         return res.status(404).send('Other events not found');
     }
 
-    res.render('product', {notableEvents: _notableEvents, specialEvents: _specialEvents, eventsNearYou: _eventsNearYou, musicEvents: _musicEvents, performanceOrArtEvents: _performanceOrArtEvents, otherEvents: _otherEvents});
+    res.render('product', {
+        customer: req.session.customer,
+        notableEvents: _notableEvents,
+        specialEvents: _specialEvents,
+        eventsNearYou: _eventsNearYou,
+        musicEvents: _musicEvents,
+        performanceOrArtEvents: _performanceOrArtEvents,
+        otherEvents: _otherEvents
+    });
 }
 export default getProduct
