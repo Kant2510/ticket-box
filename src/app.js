@@ -14,6 +14,8 @@ app.set('views', path.join(process.cwd(), 'src/views'));
 
 configViewEngine(app);
 app.use(indexRoutes)
+// Login and Admin routes
+
 app.get('/logout', (req, res) => {
     accessController.logout(req, res);
 });

@@ -13,17 +13,16 @@ class AccessController {
     }
     // TODO: API login
     async login(req, res) {
-        try {
-            const metadata = await accessService.login(req.body)
-            // if(metadata && metadata.customer && metadata.tokens){
-            req.session.customer = metadata.customer // Store user in session
-            req.session.tokens = metadata.tokens
-            //res.status(metadata.code).send({ message: 'Login successfully!' })
-            res.redirect('/')
-        } catch (error) {
-            res.render('login', { errorMessage: error.message })
-            //res.status(400).send({ error: error.message })
-        }
+            try {
+                const metadata = await accessService.login(req.body)
+                // if(metadata && metadata.customer && metadata.tokens){
+                req.session.customer = metadata.customer // Store user in session
+                req.session.tokens = metadata.tokens
+                //res.status(metadata.code).send({ message: 'Login successfully!' })
+                res.redirect('/')
+            } catch (error) {
+                res.render('login', {errorMessage: error.message})
+            }
     }
 
     // TODO: API signup

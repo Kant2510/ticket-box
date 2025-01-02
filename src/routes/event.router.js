@@ -7,6 +7,6 @@ const router = express.Router()
 // GET
 
 // POST
-router.post('/event', forwardError(EventController.getEventByCategory))
+router.post('/eventAdmin', forwardError(EventController.getEventByCategory))
 
 export default router

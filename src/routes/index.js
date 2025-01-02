@@ -12,6 +12,8 @@ import express from 'express'
 import profileRoutes from './profile/index.js'
 const router = express.Router()
 import {ensureAuthen} from "../middlewares/auth.js";
+
+import adminRouter  from './admin/index.js'
 // TODO: Main Route
 
 router.get('/', getHomepage)
@@ -27,5 +29,9 @@ router.use(accessRoutes)
 router.use(eventRoutes)
 
 // profile
-router.use(ensureAuthen, profileRoutes)
+router.use(profileRoutes)
+
+router.use('/admin', adminRouter)
+
+
 export default router
