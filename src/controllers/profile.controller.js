@@ -34,6 +34,9 @@ class ProfileController {
 
     async getProfile(req, res, next) {
         try {
+            if (!req.session.customer) {
+                return res.redirect('/login');
+            }
             const session_customer = req.session.customer;
             const customer = await CustomerModel.findById(session_customer._id);
             console.log(customer)
