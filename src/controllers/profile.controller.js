@@ -39,7 +39,7 @@ class ProfileController {
             console.log(customer)
 
             if (!customer) {
-                throw new NotFoundRequest("Customer not found in session");
+               res.redirect('/login')
             }
 
             if (customer.DOB) {
