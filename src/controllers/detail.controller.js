@@ -1,19 +1,56 @@
 import mongoose from 'mongoose'
 import event from '../models/event.model.js'
 import MongooseToObjectFunctions from '../utils/mongooseToObjectFunctions.js';
+import ticketType from '../models/ticket_type.model.js'
 class EventDetailController {
-    getEventDetail = async (req, res, next) => {
-        if(req.session.customer){
-            const customer = req.session.customer;
-            await event.findOne({ _id: req.params.id })
-                .then(event => {
-                    res.render('eventDetail/eventPage.ejs', { customer, event: MongooseToObjectFunctions.mongooseToObject(event)});
+    getEventDetail = async (req, res, next) => {                
+        try {
+            const _event = await event.findOne({ _id: req.params.id });
+            if (!_event) {
+                return res.status(404).send('Event not found');
+            }
+            
+            const _ticketTypes = await Promise.all(
+                _event.ticketType.map(async (_ticketTypeID) => {
+                    return ticketType.findOne({ ticketTypeID: _ticketTypeID });
                 })
-                .catch(next => {
-                    console.log(next.message);
-                })
-        }
+            );
+            if (!_ticketTypes) {
+                return res.status(404).send('Ticket types not found');
+            }
 
+            let customer = null;
+            if (req.session.customer) {
+                customer = req.session.customer;
+            }
+            res.render('eventDetail/eventPage.ejs', { customer, event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes)});
+        } catch (error) {
+            console.log('Error in getEventDetail:', error.message);
+            return res.status(500).send('Internal Server Error');
+        }
+    }
+
+    getBooking = async (req, res, next) => {
+        try {
+            const _event = await event.findOne({ _id: req.params.id });
+            if (!_event) {
+                return res.status(404).send('Event not found');
+            }
+        
+            const _ticketTypes = await Promise.all(
+                _event.ticketType.map(async (_ticketTypeID) => {
+                    return ticketType.findOne({ ticketTypeID: _ticketTypeID });
+                })
+            );
+            if (!_ticketTypes) {
+                return res.status(404).send('Ticket types not found');
+            }
+
+            res.render('eventDetail/booking.ejs', { event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes)});
+        } catch (error) {
+            console.log('Error in getBookingTicket:', error.message);
+            return res.status(500).send('Internal Server Error');
+        }
     }
 }
 
