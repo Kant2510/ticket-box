@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 import CustomerModel from "../models/customer.model.js";
-import core from "../../core/error.response.js";
+import core from "../core/error.response.js";
 
 const { NotFoundRequest, InternalServerError } = core;
 
@@ -34,26 +34,24 @@ class ProfileController {
 
     async getProfile(req, res, next) {
         try {
-            if (!req.session.customer) {
-                return res.redirect('/login');
-            }
             const session_customer = req.session.customer;
             const customer = await CustomerModel.findById(session_customer._id);
-            console.log(customer)
 
             if (!customer) {
-               return res.redirect('/login')
+                return res.redirect('/login');
             }
 
             if (customer.DOB) {
                 customer.DOB = new Date(customer.DOB);
             }
 
-            return res.render('profile', { customer });
+            res.render('profile', { customer });
         } catch (error) {
-            next(error);
+            console.error(error);
+            res.redirect('/login');
         }
     }
+
 
     async updateProfile(req, res, next) {
         try {

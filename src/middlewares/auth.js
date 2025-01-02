@@ -89,14 +89,14 @@ const authenticationV2 = forwardError(async (req, res, next) => {
   const accessToken = tokens.accessToken;
 
   if (!userId || !accessToken) {
-    throw new UnauthorizedRequest('Invalid Request')
+    return res.redirect('/login');
   }
 
   // TODO: Step 2: Found key token
   const keyStore = await KeyTokenService.findKeyTokenByUserID(userId)
   console.log('keyStore::', keyStore)
   if (!keyStore) {
-    throw new NotFoundRequest('Not found key token')
+    return res.redirect('/login');
   }
 
   //* In case refresh token
@@ -133,10 +133,17 @@ const authenticationV2 = forwardError(async (req, res, next) => {
 const verifyJWT = (token, keySecret) => {
   return JWT.verify(token, keySecret)
 }
+const ensureAuthen = (req, res, next) => {
+  if (!req.session.customer) {
+    return res.redirect('/login');
+  }
+  next();
+};
 
 export{
   createTokenPair,
   authentication,
   authenticationV2,
-  verifyJWT
+  verifyJWT,
+    ensureAuthen
 }
