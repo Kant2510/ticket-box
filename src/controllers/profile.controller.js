@@ -39,14 +39,14 @@ class ProfileController {
             console.log(customer)
 
             if (!customer) {
-               res.redirect('/login')
+               return res.redirect('/login')
             }
 
             if (customer.DOB) {
                 customer.DOB = new Date(customer.DOB);
             }
 
-            res.render('profile', { customer });
+            return res.render('profile', { customer });
         } catch (error) {
             next(error);
         }
