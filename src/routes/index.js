@@ -21,11 +21,11 @@ router.get('/product', getProduct)
 router.get('/detail', eventDetailController.getEventDetail)
 
 // accessRoutes
-router.use('/', accessRoutes)
+router.use(accessRoutes)
 
 // eventRoutes
-router.use('/', eventRoutes)
+router.use(eventRoutes)
 
 // profile
-router.use('/', ensureAuthen, profileRoutes)
+router.use(ensureAuthen, profileRoutes)
 export default router
