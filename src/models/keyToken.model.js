@@ -26,6 +26,10 @@ const tokenSchema = new Schema(
             type: String,
             required: true,
         },
+        verificationCode: {
+            type: String,
+            required: true
+        },
     },
     {
         timestamps: true,

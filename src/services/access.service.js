@@ -2,6 +2,8 @@
 
 // TODO: External modules
 import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer'; // Import nodemailer
+
 // TODO: Internal modules
 import customerModel from '../models/customer.model.js';
 import KeyTokenService from './keyToken.service.js';
@@ -19,18 +21,56 @@ const validatePassword = (password) => {
   // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   // regex không hoạt động
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-  // if (!passwordRegex.test(password)) {
-  //   throw new BadRequest('Password must contain at least one uppercase letter, one number, and one special character.');
-  // }
+  if (!passwordRegex.test(password)) {
+    throw new BadRequest('Password must contain at least one uppercase letter, one number, and one special character.');
+  }
   return true;
 };
+// Function to send verification email
+async function sendVerificationEmail(email, code) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'prairie2103@gmail.com', // Your email
+      pass: 'zjcp skco jaqt qeub' // Your email password or app password
+    }
+  });
+
+  const mailOptions = {
+    from: 'prairie2103@gmail.com',
+    to: email,
+    subject: 'Verification Code',
+    text: `Your verification code is: ${code}`
+  };
+
+  try {
+    console.log(`Attempting to send verification email to ${email}`);
+    await transporter.sendMail(mailOptions);
+    console.log(`Verification email sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw new Error('Failed to send verification email. Please try again.');
+  }
+}
+
+// Function to prompt user for verification code
+async function promptUserForCode() {
+  return new Promise((resolve) => {
+    const readline = require('readline').createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+    readline.question('Please enter the verification code sent to your email: ', (code) => {
+      readline.close();
+      resolve(code);
+    });
+  });
+}
+
 class AccessService {
 
   static async login({ email, password }) {
     // TODO: Step 1: Check email is existed
-    if (user && email === 'admin@gmail.com') {
-      return res.redirect('/admin');
-    }
     const foundCustomer = await customerService.findByEmail({ email })
     if (!foundCustomer) {
       throw new NotFoundRequest('Customer is not registered')
@@ -66,7 +106,6 @@ class AccessService {
     }
 
   }
-
   static async signUp({ email, password, confirm_password }) {
     if (email === "" || password === "") {
       throw new BadRequest('Username or password cannot be empty');
@@ -83,52 +122,62 @@ class AccessService {
       if (holderShop) {
         throw new BadRequest('Email already exists');
       }
+      const verificationCode = Math.floor(100000 + Math.random() * 900000);
+      await sendVerificationEmail(email, verificationCode);
 
-      // Step 2: Create new customer
-      const passwordHash = await bcrypt.hash(password, SALTY_ROUNDS);
-      const newCustomer = await customerModel.create({
-        email, password: passwordHash
-      });
-
-      // Step 3: Maybe grant token for new customer
-      if (newCustomer) {
-        // Step 3.1: Generate random keys
-        const publicKey = getRandomString(64);
-        const privateKey = getRandomString(64);
-
-        // Step 3.2: Create JWT token
-        const tokenPayload = {
-          userId: newCustomer._id,
-          email: newCustomer.email,
-        };
-
-        tokens = createTokenPair(tokenPayload, publicKey, privateKey);
-
-        // Step 3.3: Save key token in database
-        const keyStore = await KeyTokenService.createKeyToken({
-          userId: newCustomer._id,
-          publicKey,
-          privateKey,
-          refreshToken: tokens.refreshToken
-        });
-
-        if (!keyStore) {
-          throw new NotFoundRequest('Cannot create key token');
-        }
-      }
+      console.log(`A verification code has been sent to ${email}. Please check your email.`);
 
       return {
-        code: 201,
-        customer: getObjectData({ fields: ['_id',  'email'], object: newCustomer }),
-        tokens
-      };
+        code: 201, verificationCode,
+        email, password
+      }
     } catch (error) {
       console.error('signup failed:', error);
       throw error; // Re-throw the error to ensure the appropriate response is returned
     }
   }
 
+  static async verify({email, password}) {
 
+    // Step 2: Create new customer
+    const passwordHash = await bcrypt.hash(password, SALTY_ROUNDS);
+    const newCustomer = await customerModel.create({
+      email, password: passwordHash
+    });
+    let tokens
+    // Step 3: Maybe grant token for new customer
+    if (newCustomer) {
+      // Step 3.1: Generate random keys
+      const publicKey = getRandomString(64);
+      const privateKey = getRandomString(64);
+
+      // Step 3.2: Create JWT token
+      const tokenPayload = {
+        userId: newCustomer._id,
+        email: newCustomer.email,
+      };
+
+      tokens = createTokenPair(tokenPayload, publicKey, privateKey);
+
+      // Step 3.3: Save key token in database
+      const keyStore = await KeyTokenService.createKeyToken({
+        userId: newCustomer._id,
+        publicKey,
+        privateKey,
+        refreshToken: tokens.refreshToken
+      });
+
+      if (!keyStore) {
+        throw new NotFoundRequest('Cannot create key token');
+      }
+    }
+
+    return {
+      code: 201,
+      customer: getObjectData({ fields: ['_id',  'email'], object: newCustomer }),
+      tokens
+    };
+  }
   static async logout(keyStore) {
     await KeyTokenService.removeKeyByID(keyStore._id)
     return true

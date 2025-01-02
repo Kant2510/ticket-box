@@ -11,6 +11,9 @@ class AccessController {
     async getSignUp(req, res) {
         res.render('signup', { errorMessage: null })
     }
+    async getVerify(req, res) {
+        res.render('verify', { errorMessage: null })
+    }
     // TODO: API login
     async login(req, res) {
             try {
@@ -30,21 +33,34 @@ class AccessController {
         try {
             const metadata = await accessService.signUp(req.body)
 
+            req.session.email = metadata.email
+            req.session.password = metadata.password
+            req.session.verificationCode = metadata.verificationCode
             console.log('metadata:', metadata)
-            if (metadata && metadata.customer && metadata.tokens) {
-                // ???
-                // req.session.error = 'Sign up successfully! Please log in.'
-                // res.status(metadata.code).send({ message: 'Sign up successfully! Please log in.' })
-                res.redirect('/login')
+            if (metadata) {
+                res.redirect('/verify')
             }
-            res.render('signup', { error: 'Registration failed. Please try again.' })
-            //res.status(400).send({ error: 'Registration failed. Please try again.' })
+            else res.render('signup', { error: 'Email already existed' })
         } catch (error) {
             res.render('signup', { error: error.message })
-            //res.status(400).send({ error: error.message })
         }
     }
-
+    async verify(req, res){
+        const code = req.body
+        const email = req.session.email
+        const password = req.session.password
+        const verificationCode = req.session.verificationCode
+        console.log('code:', code)
+        console.log('verificationCode:', verificationCode)
+        try{
+            const metadata = await accessService.verify({email, password})
+            if(metadata && metadata.customer && metadata.tokens){
+                res.redirect('/login')
+            }
+        } catch(error){
+            res.render('verify', {error: error.message})
+        }
+    }
     // TODO: API logout
     async logout(req, res, next) {
         new OkResponse({

@@ -8,13 +8,14 @@ const router = express.Router()
 // GET
 router.get('/login', accessController.getLogin)
 router.get('/signup', accessController.getSignUp)
-
+router.get('/verify', accessController.getVerify)
 // POST
 // TODO: route sign up
 router.post('/signup', forwardError(accessController.signUp))
-
+router.post('/verify', forwardError(accessController.verify))
 // TODO: route login
 router.post('/login', forwardError(accessController.login))
+
 
 // TODO: route logout
 // TODO: middleware authentication
