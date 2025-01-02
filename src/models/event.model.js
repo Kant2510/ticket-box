@@ -64,7 +64,7 @@ const eventSchema = new Schema(
             required: false,
         },
         ticketType: {
-            type: [ticketType],
+            type: [String],
             required: false,
         },
         organizerID: {
