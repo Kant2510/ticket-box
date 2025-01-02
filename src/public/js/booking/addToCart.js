@@ -19,6 +19,10 @@ const debounce = (func, wait, immediate) => {
 const ClickAddToCartBtn = async () => {
     const CustomerID = '676428113c01571292ae5b9d'; // customerID tạm thời
     const selectedTicketsArray = JSON.parse(localStorage.getItem('selectedTickets') || '[]');
+    const toCartSelectedTicketsArray = selectedTicketsArray.map(selectedTicket => ({
+        ticketTypeID: selectedTicket.ticketTypeID,
+        quantity: selectedTicket.quantity
+    }));
 
     try {
         // Send update request to the backend API
@@ -28,7 +32,7 @@ const ClickAddToCartBtn = async () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                items: selectedTicketsArray,
+                items: toCartSelectedTicketsArray,
             }),
         });
 

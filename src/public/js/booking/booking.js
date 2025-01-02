@@ -24,6 +24,7 @@ const saveBookingToStorage = () => {
   const ticketsArray = ticketData.map(ticket => ({
       ticketTypeID: ticket.ticketTypeID,
       quantity: selectedTickets[ticket.name] || 0,
+      price: ticket.price
   })).filter(ticket => ticket.quantity > 0); // Chỉ lưu những vé có số lượng > 0
 
   if (ticketsArray.length > 0) {
