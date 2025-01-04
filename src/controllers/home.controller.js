@@ -3,6 +3,7 @@ import TicketTypeService from '../services/ticket_type.service.js'
 
 const getHomepage = async (req, res) => {
         const events = await EventService.findRecomendedEvents()
+        console.log('events:', events)
         const recommendTicketTypes = await TicketTypeService.findByRecommend()
         const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
         // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes

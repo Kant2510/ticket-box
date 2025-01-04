@@ -25,8 +25,9 @@ app.use((err, req, res, next) => {
   if (process.env.NODE_ENV === 'pro') {
     return res.render('404');
   } else {
-    if (err instanceof ErrorResponse) {
-      return res.status(err.statusCode).json({
+    if (err) {
+      console.error(err);
+      return res.status(500).json({
         message: err.message,
         stack: err.stack,
       });
