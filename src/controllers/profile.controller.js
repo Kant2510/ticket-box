@@ -1,6 +1,8 @@
 import multer from 'multer';
 import path from 'path';
 import CustomerModel from "../models/customer.model.js";
+import OrderModel from '../models/order.model.js';
+import EventModel from '../models/event.model.js';
 import core from "../core/error.response.js";
 
 const { NotFoundRequest, InternalServerError } = core;
