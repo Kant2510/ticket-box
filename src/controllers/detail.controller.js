@@ -42,7 +42,7 @@ class EventDetailController {
                 return res.status(404).send('Ticket types not found');
             }
 
-            res.render('eventDetail/booking.ejs', { event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes)});
+            res.render('eventDetail/booking.ejs', { customer: req.session.customer,event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes)});
         } catch (error) {
             console.log('Error in getBookingTicket:', error.message);
             return res.status(500).send('Internal Server Error');
