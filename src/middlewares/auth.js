@@ -1,5 +1,5 @@
 'use strict'
-import JWT from 'jsonwebtoken';  // Importing the 'jsonwebtoken' package
+import JWT, {decode} from 'jsonwebtoken';  // Importing the 'jsonwebtoken' package
 import headerConfig from "../constants/header.config.js";
 import KeyTokenService from '../services/keyToken.service.js';  // Importing the key token service
 import ErrorResponses from "../core/error.response.js";  // Default import
@@ -29,50 +29,6 @@ const createTokenPair = (payload, publicKey, privateKey) => {
   }
 }
 
-// ! Old version
-const authentication = forwardError(async (req, res, next) => {
-  /**
-   * 1. Check userId is existed
-   * 2. get Access Token from header
-   * 3. Verify Access Token
-   * 4. Check Access Token is existed in DB
-   * 5. check Access Token in keys Store
-   */
-
-  // TODO: Step 1: Check userId and accessToken is existed
-
-  const userId = req.session.customer._id
-  const accessToken = req.session.tokens.accessToken
-
-  if (!userId || !accessToken) {
-    throw new UnauthorizedRequest('Invalid Request')
-  }
-
-  // TODO: Step 2: Found key token
-  const keyStore = await KeyTokenService.findKeyTokenByUserID(userId)
-  console.log('keyStore::', keyStore)
-  if (!keyStore) {
-    throw new NotFoundRequest('Not found key token')
-  }
-
-  // TODO: Step 3: Verify Access Token
-  try {
-    const decodeUser = JWT.verify(accessToken, keyStore.publicKey)
-
-    if (decodeUser.userId !== userId) {
-      throw new UnauthorizedRequest('Invalid Request')
-    }
-
-    req.keyStore = keyStore
-    req.user = decodeUser // payload = { userId, email }
-    return next()
-  } catch (error) {
-    console.log('error', error)
-    throw error
-  }
-})
-
-// * New version
 const authenticationV2 = forwardError(async (req, res, next) => {
   /**
    * 1. Check userId is existed
@@ -87,49 +43,52 @@ const authenticationV2 = forwardError(async (req, res, next) => {
   const refreshToken = tokens?.refreshToken;
   const userId = customer?._id;
   const accessToken = tokens.accessToken;
-  console.log(customer)
   if (!userId || !accessToken) {
     return res.redirect('/login');
   }
 
   // TODO: Step 2: Found key token
   const keyStore = await KeyTokenService.findKeyTokenByUserID(userId)
-  console.log('keyStore::', keyStore)
   if (!keyStore) {
     return res.redirect('/login');
   }
 
   //* In case refresh token
   if (refreshToken) {
-    // TODO: Step 3.1: Verify Refresh Token
+    try {
 
-    const decodeUser = JWT.verify(refreshToken, keyStore.privateKey)
+      const decodeUser = JWT.verify(refreshToken, keyStore.privateKey);
 
-    if (decodeUser.userId !== userId) {
-      throw new UnauthorizedRequest('Invalid Request')
+      if (decodeUser.userId !== userId) {
+        console.error('Mismatch userId in refreshToken:', decodeUser.userId);
+        throw new UnauthorizedRequest('Invalid Refresh Token');
+      }
+
+      // Gắn thông tin vào req
+      decodeUser._id = decodeUser.userId;
+      req.session.keyStore = keyStore;
+      req.session.customer = decodeUser;
+
+      return next();
+    } catch (error) {
+      console.error('Refresh Token verification failed:', error);
+      return res.redirect('/login');
     }
-
-    // TODO: Step 4: Attach keyStore, user, refreshToken to req
-    req.keyStore = keyStore
-    req.user = decodeUser // payload = { userId, email }
-    req.refreshToken = refreshToken
-
-    return next()
   }
+      try {
+        const decodeUser = JWT.verify(accessToken, keyStore.publicKey)
+        if (decodeUser.userId !== userId) {
+          throw new UnauthorizedRequest('Invalid Request')
+        }
 
-  //* In case access token
-  // TODO: Step 3.2: Verify Access Token
-  const decodeUser = JWT.verify(accessToken, keyStore.publicKey)
+        req.session.keyStore = keyStore;
+        req.session.customer = decodeUser;
 
-  if (decodeUser.userId !== userId) {
-    res.redirect('/login');
-    throw new UnauthorizedRequest('Invalid Request')
-  }
-
-  // TODO: Step 4: Attach keyStore, user to req
-  req.keyStore = keyStore
-  req.user = decodeUser // payload = { userId, email }
-  return next()
+        return next();
+      } catch (error) {
+        throw new UnauthorizedRequest('Access Token verification failed', error);
+        return res.redirect('/login');
+      }
 })
 
 const verifyJWT = (token, keySecret) => {
@@ -142,9 +101,9 @@ const ensureAuthen = (req, res, next) => {
   next();
 };
 
+
 export{
   createTokenPair,
-  authentication,
   authenticationV2,
   verifyJWT,
     ensureAuthen
