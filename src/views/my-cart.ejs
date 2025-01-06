@@ -40,7 +40,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <input type="checkbox" class="ticket-checkbox" data-id="<%= event._id %>">
+                                <input type="checkbox" class="ticket-checkbox" data-id="<%= event.CartID %>" data-event-id="<%= event._id %>">
                                 <img src="<%= event.imgURL %>" alt="Event Banner" class="me-3 event-banner">
                                 <div class="flex-grow-1">
                                     <h5 class="card-title"><%= event.title %></h5>
@@ -87,11 +87,13 @@
     </div>
 </div>
 
-<!-- Modal thông báo lỗi -->
+<!-- Modal thông báo lỗi chọn quá nhiều event để mua -->
 <div id="errorModal" class="modal">
     <div class="modal-content">
     <p>You cannot book multiple events at once. Please select one.</p>
-    <button id="closeErrorModalBtn" class="btn-custom">OK</button>
+    <div class="btn-wrapper">
+        <button id="closeErrorModalBtn" class="btn-custom">OK</button>
+    </div>
     </div>
 </div>
 
@@ -99,9 +101,11 @@
 <div id="noSelectionModal" class="modal">
     <div class="modal-content">
     <p>Please select at least one ticket.</p>
-    <button id="closeNoSelectionModalBtn" class="btn-custom">OK</button>
+    <div class="btn-wrapper">
+        <button id="closeNoSelectionModalBtn" class="btn-custom">OK</button>
+    </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/my-cart.js"></script>
+<script src="/js/my-cart.js" type="module"></script>
 <%- include('foot') -%>
