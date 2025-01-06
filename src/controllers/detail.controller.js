@@ -49,6 +49,7 @@ class EventDetailController {
                 discount: faker.number.int({min: 5, max: 50}), // Giảm giá ngẫu nhiên từ 5% đến 50%
             }))
             res.render('eventDetail/booking.ejs', {
+                customer: req.session.customer,
                 event: MongooseToObjectFunctions.mongooseToObject(_event),
                 ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes),
                 vouchers
