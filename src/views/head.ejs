@@ -38,7 +38,112 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet" />
+    <script>
+        var eventData = [];
+        document.addEventListener("DOMContentLoaded", () => {
+            eventData = JSON.parse(
+                decodeURIComponent(document.getElementById("all-events").dataset.eventInfo)
+            );
+            console.log(eventData);
+        });
+
+        // Danh sách sản phẩm mẫu
+        const products = [
+            "The Shawshank Redemption",
+            "The Godfather",
+            "The Dark Knight",
+            "The Godfather: Part II",
+            "The Lord of the Rings: The Return of the King",
+            "Pulp Fiction",
+            "Schindler's List",
+            "12 Angry",
+            "The Lord of the Rings: The Fellowship of the Ring",
+            "Fight Club",
+            "Forrest Gump",
+            "Inception",
+            "The Lord of the Rings: The Two Towers",
+        ];
+
+        // Hàm tìm kiếm sản phẩm
+        function searchProducts() {
+            console.log(eventData);
+            const input = document.getElementById("search-input expanded");
+            const resultsContainer = document.getElementById("search-results");
+            const query = input.value.toLowerCase();
+
+            // Nếu không có nội dung nhập, ẩn danh sách
+            if (query.trim() === "") {
+                resultsContainer.style.display = "none";
+                return;
+            }
+
+            // Lọc sản phẩm theo từ khóa
+            const filteredProducts = eventData.filter((product) => 
+                product.title.toLowerCase().includes(query)
+            );
+
+            // Hiển thị danh sách kết quả
+            resultsContainer.innerHTML = "";
+            if (filteredProducts.length > 0) {
+                filteredProducts.forEach((product) => {
+                    const li = document.createElement("li");
+                    const a = document.createElement("a");
+                    const img = document.createElement("img");
+                    const span = document.createElement("span");
+                    img.src = product.imgURL;
+                    img.style.width = "50px";
+                    img.style.height = "50px";
+                    img.style.marginRight = "10px";
+                    span.appendChild(img);
+                    a.href = `/detail/${product._id}`;
+                    a.textContent = product.title;
+                    a.classList.add("search-result-a");
+                    span.appendChild(a);
+                    li.appendChild(span);
+                    resultsContainer.appendChild(li);
+                });
+                resultsContainer.style.display = "block";
+            } else {
+                resultsContainer.innerHTML = `<li class="list-group-item">No results found</li>`;
+                resultsContainer.style.display = "block";
+            }
+        }
+    </script>
     <style>
+        #search-results span{
+            display: flex;
+            padding: 5px;
+        }
+        .search-result-a {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            border-bottom: 1px solid #0c0531;
+        }
+        #search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #0c0531;
+            border-radius: 5px;
+            padding: 0;
+            list-style: none;
+            color: #ffffff;
+        }
+        #search-input {
+            width: 200px;
+            max-width:0;
+            padding: 5px;
+            transition: all .5s ease;
+            position:absolute;
+            right:20px;
+            box-sizing:border-box;
+            opacity:0;
+        }
+        #search-input:hover {
+            max-width:200px;
+            opacity:1;
+        }
         .profile-dropdown {
             position: relative;
             display: inline-block;
@@ -64,6 +169,7 @@
 
 
 <body>
+<div id="all-events" data-event-info="<%- encodeURIComponent(JSON.stringify(eventData)) %>"></div>
 <!-- Spinner Start -->
 <div
         id="spinner"
@@ -124,10 +230,12 @@
                 <a href="/product" class="nav-item nav-link">Movies</a>
                 <a href="/contact" class="nav-item nav-link">Contact Us</a>
             </div>
-            <div class="d-none d-lg-flex ms-2">
-                <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                    <small class="fa fa-search text-body"></small>
-                </a>
+            <div class="d-flex w-30 justify-content-end">
+                <div class="d-flex justify-content-center">
+                    <!-- <small class="fa fa-search text-body"></small> -->
+                    <input type="text" class="form-control border-0" placeholder="Search" id="search-input expanded" oninput="searchProducts()"/>
+                    <ul id="search-results" class="list-group position-absolute" style="z-index: 1000; width: 300px; display: none; margin-top: 50px;"></ul>
+                </div>
 <!--                <a class="btn-sm-square bg-white rounded-circle ms-3" href="/login">-->
 <!--                    <small class="fa fa-user text-body"></small>-->
 <!--                </a>-->

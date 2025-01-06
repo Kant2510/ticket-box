@@ -1,6 +1,8 @@
 import event from '../models/event.model.js'
+import MongooseToObjectFunctions from '../utils/mongooseToObjectFunctions.js';
 
 const getProduct = async (req, res) => {
+    const allEvents = await event.find()
     const _notableEvents = await event.find({}).sort({visitCount: -1}).limit(4).lean();
     if (!_notableEvents) {
         return res.status(404).send('Notable events not found');
@@ -31,7 +33,7 @@ const getProduct = async (req, res) => {
     if (!_otherEvents) {
         return res.status(404).send('Other events not found');
     }
-
+    const eventData = MongooseToObjectFunctions.multipleMongooseToObject(allEvents)
     res.render('product', {
         customer: req.session.customer,
         notableEvents: _notableEvents,
@@ -39,7 +41,8 @@ const getProduct = async (req, res) => {
         eventsNearYou: _eventsNearYou,
         musicEvents: _musicEvents,
         performanceOrArtEvents: _performanceOrArtEvents,
-        otherEvents: _otherEvents
+        otherEvents: _otherEvents,
+        eventData
     });
 }
 export default getProduct
