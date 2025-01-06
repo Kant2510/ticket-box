@@ -36,6 +36,7 @@ app.get('/logout', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+  console.log(err);
   if (process.env.NODE_ENV === 'pro') {
     return res.render('404');
   } else {

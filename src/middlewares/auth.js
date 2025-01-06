@@ -40,12 +40,14 @@ const authenticationV2 = forwardError(async (req, res, next) => {
 
   // TODO: Step 1: Check userId and accessToken is existed
   const { tokens, customer } = req.session || {};
+  console.log('Session:', req.session);
+  if(!tokens || !customer) {
+    return res.redirect('/login');
+  }
   const refreshToken = tokens?.refreshToken;
   const userId = customer?._id;
   const accessToken = tokens.accessToken;
-  if (!userId || !accessToken) {
-    return res.redirect('/login');
-  }
+
 
   // TODO: Step 2: Found key token
   const keyStore = await KeyTokenService.findKeyTokenByUserID(userId)
