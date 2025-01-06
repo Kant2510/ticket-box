@@ -13,6 +13,11 @@ app.use(express.static(path.join(__dirname, "src", 'public'))); // Thư mục pu
 app.set('views', path.join(process.cwd(), 'src/views'));
 
 configViewEngine(app);
+
+app.get('/adminPage-create', (req, res) => {
+  res.render('adminPage-create');
+});
+
 app.use(indexRoutes)
 // Login and Admin routes
 
@@ -22,6 +27,7 @@ app.get('/logout', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+  console.log(err);
   if (process.env.NODE_ENV === 'pro') {
     return res.render('404');
   } else {

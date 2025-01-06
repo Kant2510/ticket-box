@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Box - Admin Page</title>
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"
+          rel="stylesheet"
+  />
+  <!-- Icon Font Stylesheet -->
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+          rel="stylesheet"
+  />
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+          rel="stylesheet"
+  />
+  <link href="css/admin-style.css" rel="stylesheet" />
+</head>
+<body>
+  <%- include('admin-head') -%>
+  <div class="create-process">
+    <div class="step active" id="step1">1. Event Information</div>
+    <div class="step" id="step2">2. Timeline & Ticket</div>
+    <div class="step" id="step3">3. Setting</div>
+  </div>
+  <div class="admin-container">
+    <!-- Form 1 (Visible at step 1) -->
+    <div class="Form1" id="Form1">
+      <div class="upload">
+        <div class="event-image">
+          <div class="event-logo">
+            <input type="file" id="logo-image" accept="image/*">
+            <img id="logo-preview" alt="Logo Preview" >
+          </div>
+          <div class="event-banner">
+            <input type="file" id="banner-image" accept="image/*">
+            <img id="banner-preview" alt="Banner Preview">
+          </div>
+        </div>
+        <div class="event-name">
+          <label class="title" for="event-name">Event Name</label>
+          <input type="text" id="event-name" placeholder="Enter event name">
+        </div>
+      </div>
+      <div class="upload" id="upload-event-address">
+        <label class="title" for="event-address">Event Address</label>
+        
+        <!-- Offline/Online Radio Buttons -->
+        <div class="form-group" >
+          <input type="radio" id="offline" name="event-type" value="offline" />
+          <label for="offline">Offline</label>
+          <input type="radio" id="online" name="event-type" value="online" />
+          <label for="online">Online</label>
+        </div>
+        <label for="venue-name">Venue Name</label>
+        <input type="text" id="venue-name" name="venue-name" placeholder="Enter the venue name" />
+        <!-- City/Province TextBlock -->
+        <div class="form-group">
+          <div class="address-province">
+          <label for="city-province">City/Province</label>
+          <select id="city-province" name="city-province">
+            <option value="">Select a city or province</option>
+            <option value="Hanoi">Hanoi</option>
+            <option value="Ho Chi Minh City">Ho Chi Minh City</option>
+          </select>
+          </div>
+          <div class="address-district">
+            <label for="district">District</label>
+            <select id="district" name="district">
+              <option value="">Select a district</option>
+              <option value="Dong Da">Dong Da</option>
+              <option value="Ha Dong">Ha Dong</option>
+            </select>
+          </div>
+        </div>
+        <!-- Details TextBlock -->
+        <label for="event-details">Event Details</label>
+        <input type="text" id="event-details" name="event-details" placeholder="Enter the event address" />
+      </div>
+      <div class="upload" >
+        <label for="event-category">Event Category</label>
+          <select id="event-category" name="event-category">
+            <option value="">Select a category</option>
+            <option value="Music">Music</option>
+            <option value="Sport">Sport</option>
+          </select>
+        
+      </div>
+      <div class="upload" id="ticket-time">
+        <div class="input-field">
+          <label for="start-time">Event Start Time:</label>
+          <input type="datetime-local" id="start-time" name="start-time">
+        </div>
+        <div class="input-field">
+          <label for="end-time">Event End Time:</label>
+          <input type="datetime-local" id="end-time" name="end-time">
+        </div>
+      </div>
+      <div class="upload">
+        <label>Event description</label>
+        <textarea id="description" name="description" rows="20" cols="30" ></textarea>
+      </div>
+      <div class="upload" id="organizer">
+        <label class="title" for="event-organizer">Event Organizer</label>
+        <div class="form-group">
+          <div class="event-logo">
+            <input id="organizer-logo" type="file" accept="image/*">
+          </div>
+          <div id="organizer-info">
+            <label>Organizer Name</label>
+            <input type="text" id="event-organizer" name="event-organizer" placeholder="Enter the event organizer" />
+            <label>Organizer Description</label>
+            <textarea id="organizer-description" name="description" rows="5" cols="30" ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form 2 (Visible at step 2) -->
+    <div class="Form2" id="Form2">
+      <div class="upload2">
+        <!-- Nút "Add Ticket Type" -->
+        <button class="add-ticket-btn" id="addTicketBtn">Add Ticket Type</button>
+      </div>
+      
+      <!-- Form để thêm loại vé -->
+      <div class="add-ticket-form" id="addTicketForm" style="display: none;">
+        <form>
+          <label for="ticketName">* Ticket name</label>
+          <input type="text" id="ticketName" required>
+          <label for="ticketPrice">* Ticket price</label>
+          <div class="form-group">
+            <input style="width: 120px;" type="number" id="ticketPrice" placeholder="Enter price">
+            <label><input type="checkbox"> Free</label>
+          </div>
+          <label for="totalTickets">* Total number of tickets</label>
+          <input style="width: 120px;" type="number" id="totalTickets" required placeholder="Enter quantity">
+          <label for="ticketDescription">* Ticket description</label>
+          <textarea id="ticketDescription" rows="4" required></textarea>
+          <button type="button" class="save-btn">Add</button>
+          <button type="button" class="cancel-btn" id="cancelForm">Cancel</button>
+        </form>
+      </div>
+    </div>
+    
+
+    <!-- Form 3 (Visible at step 3) -->
+    <div class="Form3" id="Form3">
+      <div class="upload">
+        <p>Step 3: Configure settings</p>
+        <!-- Input fields for event settings go here -->
+      </div>
+    </div>
+    <!-- Buttons to navigate steps -->
+    <div class="form-navigation">
+      <button id="back-btn" onclick="back()">Back</button>
+      <button id="next-btn" onclick="next()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+    const nextBtn = document.getElementById("next-btn");
+    const backBtn = document.getElementById("back-btn");
+    let ticketTypes = [];
+    
+    function showStep(step) {
+        const forms = ["Form1", "Form2", "Form3"];
+        forms.forEach((form, index) => {
+            document.getElementById(form).style.display = (index === step - 1) ? "block" : "none";
+        });
+        updateStepIndicator(step);
+    }
+    
+    function updateStepIndicator(step) {
+        document.querySelectorAll(".step").forEach((stepElement, index) => {
+            stepElement.classList.toggle("active", index + 1 === step);
+        });
+    }
+    
+    function addTicketType() {
+        const name = document.getElementById('ticketName').value;
+        const price = document.getElementById('ticketPrice').value;
+        const quantity = document.getElementById('totalTickets').value;
+        const description = document.getElementById('ticketDescription').value;
+
+        if (!name || !price || !quantity || !description) {
+            alert('Please fill all required fields');
+            return;
+        }
+
+        if (ticketTypes.some(ticket => ticket.name.toLowerCase() === name.toLowerCase())) {
+            alert('Ticket name already exists. Please choose a different name.');
+            return;
+        }
+
+        ticketTypes.push({ name, price, quantity, description });
+        document.getElementById('addTicketForm').style.display = 'none';
+        clearTicketForm();
+        displayTickets();
+    }
+    
+    function clearTicketForm() {
+        document.getElementById('ticketName').value = '';
+        document.getElementById('ticketPrice').value = '';
+        document.getElementById('totalTickets').value = '';
+        document.getElementById('ticketDescription').value = '';
+    }
+    
+    function displayTickets() {
+        const ticketList = document.createElement('div');
+        ticketList.classList.add('ticket-list');
+        ticketList.style.marginTop = '20px';
+        
+        ticketList.innerHTML = ticketTypes.map((ticket, index) => `
+        <div class="ticket-item">
+          <div>
+            <label class="ticket-type-name">${ticket.name}</label>
+            <label class="ticket-type-price">Price: ${ticket.price}</label>
+            <label class="ticket-type-quantity">Quantity: ${ticket.quantity}</label>
+          </div>
+          <button class="cancel-btn" onclick="removeTicket(${index})" >x</button>
+      </div>
+            
+        `).join('');
+    
+        const existingList = document.querySelector('.ticket-list');
+        if (existingList) {
+            existingList.remove();
+        }
+        document.querySelector('.upload2').appendChild(ticketList);
+    }
+    
+    function removeTicket(index) {
+        ticketTypes.splice(index, 1);
+        displayTickets();
+    }
+    
+    async function convertImageToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+    
+    async function saveDataToServer() {
+        try {
+          const eventLogoInput = document.getElementById('logo-image');
+          const eventBannerInput = document.getElementById('banner-image');
+
+          if (!eventLogoInput.files[0] || !eventBannerInput.files[0]) {
+            throw new Error('Please select both logo and banner images');
+          }
+        
+          const eventLogo = await convertImageToBase64(eventLogoInput.files[0]);
+          const eventBanner = await convertImageToBase64(eventBannerInput.files[0]);
+        
+          if (!eventLogo || !eventBanner) {
+            throw new Error('Failed to process image files');
+          }
+            const formData = {
+              title: document.getElementById('event-name').value,
+              addressProvince: document.getElementById('city-province').value,
+              addressDetail: document.getElementById('event-details').value,
+              startDate: new Date(document.getElementById('start-time').value),
+              endDate: new Date(document.getElementById('end-time').value),
+              visitCount: 0,
+              category: document.getElementById('event-category').value,
+              status: "Active",
+              ticketTypes,
+              organizerId: "Long",
+              eventLogo: eventLogo,
+              eventBanner: eventBanner,
+              description: document.getElementById('description').value,
+              eventType: document.querySelector('input[name="event-type"]:checked')?.value,
+              venueName: document.getElementById('venue-name').value,
+              district: document.getElementById('district').value,
+            };
+
+            const response = await fetch('/event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) throw new Error('Failed to save event data');
+
+            const result = await response.json();
+            localStorage.setItem('currentEventId', result.data._id);
+            alert('Event saved successfully!');
+            return true;
+        } catch (error) {
+            console.error('Error saving event:', error);
+            alert('Failed to save event data. Please try again.');
+            return false;
+        }
+    }
+    
+    async function next() {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            if (currentStep === totalSteps) {
+                const saved = await saveDataToServer();
+                if (saved) {
+                    alert('Event saved successfully!');
+                }
+                showStep(currentStep);
+            } else {
+                showStep(currentStep);
+            }
+        }
+    }
+    
+    function back() {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    }
+    
+    document.querySelector('.save-btn').addEventListener('click', addTicketType);
+    document.getElementById('addTicketBtn').addEventListener('click', () => {
+    const form = document.getElementById('addTicketForm');
+    if (form.style.display === 'block') {
+      clearTicketForm();
+      form.style.display = 'none';
+    } else {
+      form.style.display = 'block';
+    }
+});
+    document.getElementById('cancelForm').addEventListener('click', () => {
+        document.getElementById('addTicketForm').style.display = 'none';
+        clearTicketForm();
+    });
+    document.getElementById('logo-image').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.getElementById('logo-preview');
+            img.src = e.target.result;
+            img.style.display = 'block'; // Hiển thị ảnh
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('banner-image').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.getElementById('banner-preview');
+            img.src = e.target.result;
+            img.style.display = 'block'; // Hiển thị ảnh
+        };
+        reader.readAsDataURL(file);
+    }
+});
+    showStep(currentStep);
+</script>
+<script src="../public/js/formHandler.js"></script>
+</body>
+</html>

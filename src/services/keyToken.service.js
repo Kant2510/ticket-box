@@ -58,12 +58,11 @@ class KeyTokenService {
   static async createKeyToken({ userId, publicKey, privateKey, refreshToken }) {
     try {
       // Encrypt the private key before storing it (for better security)
-      const encryptedPrivateKey = await bcrypt.hash(privateKey, 10);
 
       const filter = { user: userId };
       const update = {
         publicKey,
-        privateKey: encryptedPrivateKey, // Store encrypted private key
+        privateKey,
         refreshToken,
         refreshTokensUsed: [],
       };

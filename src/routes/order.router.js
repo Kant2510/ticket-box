@@ -6,7 +6,7 @@ import { authenticationV2 } from '../middlewares/auth.js'
 
 const router = express.Router()
 // GET
-router.get('/cart/:id', OrderController.getCart)
+    router.get('/cart/:id', OrderController.getCart)
 // router.get('/:id/booking', EventDetailController.getBooking);
 
 // POST

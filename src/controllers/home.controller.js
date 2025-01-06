@@ -5,6 +5,7 @@ const getHomepage = async (req, res) => {
         const allEvents = await EventModel.find()
         console.log('allEvents:', allEvents)
         const events = await EventService.findRecomendedEvents()
+
         const musicEvents = await EventService.findByCategory({ category: 'Music' })
         const artEvents = await EventService.findByCategory({ category: 'Art' })
         // const recommendTicketTypes = await TicketTypeService.findByRecommend()
@@ -23,6 +24,17 @@ const getHomepage = async (req, res) => {
                 res.render('index', { customer: null, events, musicEvents, artEvents, newReleaseEvents, eventData })
         }
     // return res.render('index')
+
+        const recommendTicketTypes = await TicketTypeService.findByRecommend()
+        const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
+        // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes
+        const nowShowing = [recommendTicketTypes[0]].concat(newReleaseTicketTypes.slice(0, 3))
+        try{
+            res.render('index', {events, nowShowing })
+
+    } catch (error) {
+            res.render('index', {events, nowShowing })    }
+
 }
 
 export default getHomepage

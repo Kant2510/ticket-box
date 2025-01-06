@@ -1,4 +1,6 @@
 const addToCartBTNElement = document.querySelector('.cart-btn');
+const customerDataElement = document.getElementById('customer-data');
+const CustomerData = JSON.parse(decodeURIComponent(customerDataElement.dataset.customer));
 
 const debounce = (func, wait, immediate) => {
     let timeout;
@@ -17,7 +19,7 @@ const debounce = (func, wait, immediate) => {
 
 
 const ClickAddToCartBtn = async () => {
-    const CustomerID = '676428113c01571292ae5b9d'; // customerID tạm thời
+    const CustomerID = CustomerData._id;
     const selectedTicketsArray = JSON.parse(localStorage.getItem('selectedTickets') || '[]');
     const toCartSelectedTicketsArray = selectedTicketsArray.map(selectedTicket => ({
         ticketTypeID: selectedTicket.ticketTypeID,

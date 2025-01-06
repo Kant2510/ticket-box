@@ -1,6 +1,8 @@
 import multer from 'multer';
 import path from 'path';
 import CustomerModel from "../models/customer.model.js";
+import OrderModel from '../models/order.model.js';
+import EventModel from '../models/event.model.js';
 import core from "../core/error.response.js";
 
 const { NotFoundRequest, InternalServerError } = core;
@@ -32,11 +34,12 @@ class ProfileController {
     // Middleware for file uploads
     uploadAvatar = upload.single('avatar');
 
-    async getProfile(req, res, next) {
+    async getProfile(req, res) {
         try {
             const session_customer = req.session.customer;
             const customer = await CustomerModel.findById(session_customer._id);
 
+            console.log('Session:', req.session);
             if (!customer) {
                 return res.redirect('/login');
             }
@@ -60,6 +63,7 @@ class ProfileController {
 
             if (!customer_id) {
                 throw new NotFoundRequest("Customer not found in session");
+                res.redirect('/login');
             }
 
             const updatedData = { fullName, DOB, gender, address, phone };
@@ -85,8 +89,7 @@ class ProfileController {
             req.session.customer = updatedCustomer;
             res.redirect('/profile');
         } catch (error) {
-            next(error);
-        }
+            res.redirect('/login');        }
     }
 }
 

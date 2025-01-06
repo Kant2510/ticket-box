@@ -114,7 +114,6 @@ class AccessService {
     if (!validatePassword(password) || password !== confirm_password) {
       throw new BadRequest('Confirm password does not match');
     }
-    let tokens
     try {
       // Step 1: Check if email exists
       const holderShop = await customerService.findByEmail({ email });
