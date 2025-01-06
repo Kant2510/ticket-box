@@ -14,7 +14,7 @@ body {
 
 .ticket-selection,
 .order-summary {
-    width: 48%;
+    /* width: 48%; */
     background: #111;
     padding: 20px;
     border-radius: 8px;
@@ -162,7 +162,7 @@ body {
 }
 
 .total {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
     align-items: center;
     margin-top: 15px;

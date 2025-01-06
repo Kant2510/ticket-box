@@ -62,6 +62,7 @@ class ProfileController {
 
             if (!customer_id) {
                 throw new NotFoundRequest("Customer not found in session");
+                res.redirect('/login');
             }
 
             const updatedData = { fullName, DOB, gender, address, phone };
@@ -87,8 +88,7 @@ class ProfileController {
             req.session.customer = updatedCustomer;
             res.redirect('/profile');
         } catch (error) {
-            next(error);
-        }
+            res.redirect('/login');        }
     }
 }
 

@@ -87,7 +87,7 @@ const authenticationV2 = forwardError(async (req, res, next) => {
   const refreshToken = tokens?.refreshToken;
   const userId = customer?._id;
   const accessToken = tokens.accessToken;
-
+  console.log(customer)
   if (!userId || !accessToken) {
     return res.redirect('/login');
   }
@@ -102,6 +102,7 @@ const authenticationV2 = forwardError(async (req, res, next) => {
   //* In case refresh token
   if (refreshToken) {
     // TODO: Step 3.1: Verify Refresh Token
+
     const decodeUser = JWT.verify(refreshToken, keyStore.privateKey)
 
     if (decodeUser.userId !== userId) {
@@ -121,6 +122,7 @@ const authenticationV2 = forwardError(async (req, res, next) => {
   const decodeUser = JWT.verify(accessToken, keyStore.publicKey)
 
   if (decodeUser.userId !== userId) {
+    res.redirect('/login');
     throw new UnauthorizedRequest('Invalid Request')
   }
 

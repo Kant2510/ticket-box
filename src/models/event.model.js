@@ -71,6 +71,10 @@ const eventSchema = new Schema(
             type: String,
             required: false,
         },
+        imgUrl: {
+            type: String,
+            required: false,
+        },
     },
     {
         timestamps: true,

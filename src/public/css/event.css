@@ -159,12 +159,11 @@ h1{
 
 .event-details .book-ticket-btn-container .book-ticket-btn {
     padding: 8px 48px 8px 48px;
-    border: 1px solid #000;
-    border-bottom: 2px solid #000;
-    border-right: 2px solid #000;
-    border-radius: 0;
+    border: none;
+    border-radius: 10;
     opacity: 0px;
-    background: #fff;
+    color: white;
+    background: #636fd9;
 }
 
 .event-details .book-ticket-btn-container .book-ticket-btn:hover {

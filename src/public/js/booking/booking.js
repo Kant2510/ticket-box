@@ -1,11 +1,15 @@
 const ticketsContainer = document.getElementById('tickets');
+const vouchersContainer = document.getElementById('vouchers');
 const pricingContainer = document.getElementById('pricing');
 const totalTicketsElement = document.getElementById('total-tickets');
 const totalPriceElement = document.getElementById('total-price');
 const bookNowBtnElement = document.getElementById('booknow-btn');
 const stageLayoutBtnElement = document.getElementById('stagelayout-btn');
 const rawTicketTypeInfo = decodeURIComponent(ticketsContainer.dataset.ticketInfo);
+const rawVoucherInfo = decodeURIComponent(vouchersContainer.dataset.voucherInfo);
 const ticketData = JSON.parse(rawTicketTypeInfo);
+const voucherData = JSON.parse(rawVoucherInfo);
+console.log(voucherData);
 // NOTE: biến quantity là số lượng đang chọn của mỗi loại vé, còn ticket.quantity là số vé còn lại của loại vé đấy trong db
 
 // Số vé hiển thị trên mỗi trang
@@ -57,7 +61,19 @@ const updateOrderSummary = () => {
     }
 
     totalTicketsElement.textContent = totalTickets;
-    totalPriceElement.textContent = totalPrice.toLocaleString() + '₫';
+  totalPriceElement.textContent = totalPrice.toLocaleString() + '₫';
+
+  const voucherCode = document.getElementById('voucher-input').value;
+  const vouchers = voucherData;
+  const voucher = vouchers.find(v => v.name === voucherCode);
+  if (voucher) {
+      const discount = voucher.discount;
+      const totalPrice = parseInt(totalPriceElement.textContent.replace('₫', '').replace(/,/g, ''), 10);
+      const finalPrice = totalPrice * (1 - discount / 100);
+      document.getElementById('total-discount').textContent = `-${(discount * totalPrice / 100).toLocaleString()}₫`;
+      document.getElementById('final-price').textContent = `${finalPrice.toLocaleString()}₫`;
+  }
+  else document.getElementById('final-price').textContent = totalPrice.toLocaleString() + '₫';
     
     // Lưu vào localStorage mỗi khi cập nhật
     saveBookingToStorage();
@@ -97,22 +113,25 @@ const renderTickets = () => {
       ticketElement.className = 'ticket';
 
       ticketElement.innerHTML = `
-        <div class="ticket-info">
-          <strong>${ticket.name}</strong>
-          <p>${`${ticket.price.toLocaleString()}₫`}</p>
-        </div>
-        <div class="ticket-quantity">
-          ${ticket.quantity === 0 ? '<div class="sold-out">Sold Out</div>' : `
-            <button class="btn" >-</button>
-            <input type="number" value="${selectedTickets[ticket.name]}" min="0" id="quantity-${ticket.name}">
-            <button class="btn" >+</button>
-          `}
-        </div>
-        <div class="ticket-benefit">
-          <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 96 960 960" width="24" fill="#000">
-            <path d="M480 976q-83 0-156.5-31.5T198 860q-54-54-85.5-127.5T81 576q0-83 31.5-156.5T198 292q54-54 127.5-85.5T480 176q83 0 156.5 31.5T762 292q54 54 85.5 127.5T879 576q0 83-31.5 156.5T762 860q-54 54-127.5 85.5T480 976Zm-33-401h66v-270h-66v270Zm0 162h66v-66h-66v66ZM480 900q146 0 248-102t102-248q0-146-102-248T480 200q-146 0-248 102T130 576q0 146 102 248t248 102Z"/>
-          </svg>
-          <p class="benefit-text">${ticket.description}</p>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+                <img src="${ticket.imgUrl}" alt="${ticket.name}" class="img-thumbnail" style="width: 80px; height: 80px" />
+                <div class="ms-3" id="ticket-info">
+                    <h6 class="mb-1">${ticket.name}</h6>
+                    <small>Price: ${`${ticket.price.toLocaleString()}₫`}</small>
+                </div>
+            </div>
+            <div class="ticket-quantity">
+                ${
+                    ticket.quantity === 0
+                        ? '<div class="sold-out">Sold Out</div>'
+                        : `
+                  <button class="btn btn-outline-secondary btn-sm" id="minus-btn">-</button>
+                  <input type="number" value="${selectedTickets[ticket.name]}" min="0" id="quantity-${ticket.name}">
+                  <button class="btn btn-outline-secondary btn-sm" id="plus-btn">+</button>
+                `
+                }
+            </div>
         </div>
       `;
 
@@ -145,7 +164,21 @@ const changePage = (delta) => {
 // Khởi tạo
 updateOrderSummary();
 renderTickets();
-
+document.getElementById('apply-voucher-btn').addEventListener('click', (event) => {
+  event.preventDefault();
+  const voucherCode = document.getElementById('voucher-input').value;
+  const vouchers = voucherData;
+  const voucher = vouchers.find(v => v.name === voucherCode);
+  if (voucher) {
+      const discount = voucher.discount;
+      const totalPrice = parseInt(totalPriceElement.textContent.replace('₫', '').replace(/,/g, ''), 10);
+      const finalPrice = totalPrice * (1 - discount / 100);
+      document.getElementById('total-discount').textContent = `-${(discount * totalPrice / 100).toLocaleString()}₫`;
+      document.getElementById('final-price').textContent = `${finalPrice.toLocaleString()}₫`;
+  } else {
+      alert('Mã giảm giá không hợp lệ');
+  }
+});
 // Cập nhật event listener cho nút Book Now
 bookNowBtnElement.addEventListener('click', () => {
   const selectedTicketsArray = JSON.parse(localStorage.getItem('selectedTickets') || '[]');
@@ -168,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Kiểm tra nếu click vào nút tăng/giảm số lượng
     if (event.target.matches('.btn')) {
       const ticketElement = event.target.closest('.ticket');
-      const ticketType = ticketElement.querySelector('.ticket-info strong').textContent;
+      const ticketType = ticketElement.querySelector('#ticket-info h6').textContent;
       const isIncrease = event.target.textContent === '+';
       updateTicket(ticketType, isIncrease ? 1 : -1);
     }

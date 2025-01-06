@@ -33,16 +33,16 @@
                             <% tickets.forEach(ticket => { %>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="d-flex align-items-center">
-                                    <img src="<%= ticket.image %>" alt="<%= ticket.name %>" class="img-thumbnail" style="width: 80px; height: auto" />
+                                    <img src="<%= ticket.imgUrl %>" alt="<%= ticket.name %>" class="img-thumbnail" style="width: 80px; height: 80px" />
                                     <div class="ms-3">
                                         <h6 class="mb-1"><%= ticket.name %></h6>
                                         <small>Price: <%= ticket.price %> VND</small>
                                     </div>
                                 </div>
                                 <div>
-                                    <button class="btn btn-outline-secondary btn-sm">-</button>
-                                    <span class="mx-2"><%= ticket.quantity %></span>
-                                    <button class="btn btn-outline-secondary btn-sm">+</button>
+                                    <button class="btn btn-outline-secondary btn-sm" id="minus-btn">-</button>
+                                    <span class="mx-2" id="">0</span>
+                                    <button class="btn btn-outline-secondary btn-sm" id="plus-btn">+</button>
                                 </div>
                             </div>
                             <% }) %>

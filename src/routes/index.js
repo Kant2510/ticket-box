@@ -19,6 +19,11 @@ import {ensureAuthen} from "../middlewares/auth.js";
 import adminRouter  from './admin/index.js'
 // TODO: Main Route
 
+// accessRoutes
+router.use(accessRoutes)
+// profile
+router.use(profileRoutes)
+
 router.get('/', getHomepage)
 router.get('/about', getAbout)
 router.get('/contact', getContact)
@@ -28,8 +33,7 @@ router.get('/my-order', getMyOrder);
 // eventDetailRoutes
 router.use('/detail', eventDetailRoutes)
 
-// accessRoutes
-router.use(accessRoutes)
+
 
 // ShoppingCartAPIRoutes
 router.use('/', shoppingCartRoutes)
@@ -37,8 +41,7 @@ router.use('/', shoppingCartRoutes)
 // eventRoutes
 router.use(eventRoutes)
 
-// profile
-router.use(profileRoutes)
+
 
 router.use('/admin', adminRouter)
 
