@@ -13,15 +13,6 @@ app.use(express.static(path.join(__dirname, "src", 'public'))); // Thư mục pu
 app.set('views', path.join(process.cwd(), 'src/views'));
 
 configViewEngine(app);
-// Login and Admin routes
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  if (email === 'admin@gmail.com' && password === 'Ticketbox1234@') {
-    return res.redirect('/adminPage-create');
-  } else {
-    return res.status(400).send('Đăng nhập không thành công!');
-  }
-});
 
 app.get('/adminPage-create', (req, res) => {
   res.render('adminPage-create');
