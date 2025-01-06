@@ -43,7 +43,7 @@ router.use(eventRoutes)
 
 
 
-router.use('/admin', adminRouter)
+router.use(adminRouter)
 
 
 // orderRoutes

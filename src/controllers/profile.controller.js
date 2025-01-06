@@ -39,10 +39,10 @@ class ProfileController {
             const session_customer = req.session.customer;
             const customer = await CustomerModel.findById(session_customer._id);
 
-                console.log('Session:', req.session);
-            // if (!customer) {
-            //     return res.redirect('/login');
-            // }
+            console.log('Session:', req.session);
+            if (!customer) {
+                return res.redirect('/login');
+            }
 
             if (customer.DOB) {
                 customer.DOB = new Date(customer.DOB);
