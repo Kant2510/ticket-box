@@ -1,6 +1,7 @@
 import EventService from '../services/event.service.js'
 import MongooseToObjectFunctions from '../utils/mongooseToObjectFunctions.js';
 import EventModel from '../models/event.model.js';
+import TicketTypeService from '../services/ticket_type.service.js';
 const getHomepage = async (req, res) => {
         const allEvents = await EventModel.find()
         console.log('allEvents:', allEvents)
@@ -15,7 +16,7 @@ const getHomepage = async (req, res) => {
         // console.log('nowShowing:', nowShowing)
         // console.log('events:', MongooseToObjectFunctions.multipleMongooseToObject(allEvents))
         const eventData = MongooseToObjectFunctions.multipleMongooseToObject(allEvents)
-        console.log('eventData:', eventData)
+        // console.log('eventData:', eventData)
         try {
                 const customer = req.session.customer;
                 res.render('index', { customer, events, musicEvents, artEvents, newReleaseEvents, eventData })
