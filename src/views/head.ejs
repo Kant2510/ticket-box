@@ -70,7 +70,7 @@
             console.log(eventData);
             const input = document.getElementById("search-input expanded");
             const resultsContainer = document.getElementById("search-results");
-            const query = input.value.toLowerCase();
+            const query = input.value.toLowerCase().trim();
 
             // Nếu không có nội dung nhập, ẩn danh sách
             if (query.trim() === "") {
