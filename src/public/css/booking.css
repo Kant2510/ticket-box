@@ -59,9 +59,8 @@ body {
     border-radius: 8px;
     margin-bottom: 20px;
     display: grid;
-    grid-template-areas: 
-        'info info quantity'
-        'benefit benefit benefit';
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
 }
 
 .ticket-info {

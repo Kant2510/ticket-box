@@ -1,3 +1,5 @@
+import axios from 'https://cdn.skypack.dev/axios';
+
 document.addEventListener('DOMContentLoaded', () => {
     const selectAllCheckbox = document.getElementById('selectAllBTN');
     const selectAll = document.getElementById('selectAll');
@@ -28,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (selectedTickets.length > 1) {
         errorModal.style.display = 'flex';
       } else {
-        const selectedEventId = selectedTickets[0].getAttribute('data-id');
+        const selectedEventId = selectedTickets[0].getAttribute('data-event-id');
         window.location.href = `/detail/${selectedEventId}}`; // Chuyển đến trang đặt vé với eventId
       }
     });
@@ -46,30 +48,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Confirm Delete
     confirmDeleteBtn.addEventListener('click', () => {
       const selectedTickets = document.querySelectorAll('.ticket-checkbox:checked');
-      const selectedEventIds = Array.from(selectedTickets).map(checkbox => checkbox.getAttribute('data-id'));
-  
+      const selectedCartIDs = Array.from(selectedTickets).map(checkbox => checkbox.getAttribute('data-id'));
+      
       // Gửi yêu cầu xóa đến backend
-      fetch('/delete-carts', {
-        method: 'POST',
+      axios.post('/api/shopping-cart/delete', { selectedCartIDs }, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ eventIds: selectedEventIds }),
       })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('Tickets deleted successfully!');
-            location.reload(); // Tải lại trang để cập nhật giỏ hàng
+        .then(response => {
+          if (response.data.success) {
+            alert('Đã xóa vé khỏi giỏ hàng của bạn');
+            window.location.reload(); // Reload the page to update the cart
           } else {
-            alert('Failed to delete tickets.');
+            alert('Xóa vé thất bại');
           }
         })
         .catch(error => {
           console.error('Error:', error);
-          alert('An error occurred while deleting tickets.');
+          alert('Có lỗi xảy ra trong quá trình xóa vật phẩm khỏi giỏ hàng');
         });
-  
+      
       deleteModal.style.display = 'none';
     });
   

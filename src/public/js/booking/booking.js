@@ -114,7 +114,7 @@ const renderTickets = () => {
 
       ticketElement.innerHTML = `
       <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center ticket-info">
                 <img src="${ticket.imgUrl}" alt="${ticket.name}" class="img-thumbnail" style="width: 80px; height: 80px" />
                 <div class="ms-3" id="ticket-info">
                     <h6 class="mb-1">${ticket.name}</h6>
@@ -183,9 +183,7 @@ document.getElementById('apply-voucher-btn').addEventListener('click', (event) =
 bookNowBtnElement.addEventListener('click', () => {
   const selectedTicketsArray = JSON.parse(localStorage.getItem('selectedTickets') || '[]');
   if (selectedTicketsArray.length > 0) {
-      let url = new URL(window.location.href);
-      url.pathname += '/info';
-      window.location.href = url.toString();
+    // Xử lý sự kiện order
   } else {
       alert('Vui lòng chọn ít nhất một vé');
   }

@@ -7,7 +7,6 @@ import { faker } from '@faker-js/faker'
 class EventDetailController {
     getEventDetail = async (req, res, next) => {                
         try {
-            const allEvents = await event.find()
             const _event = await event.findOne({ _id: req.params.id });
             if (!_event) {
                 return res.status(404).send('Event not found');
@@ -21,14 +20,10 @@ class EventDetailController {
             if (!_ticketTypes) {
                 return res.status(404).send('Ticket types not found');
             }
-            const eventData = MongooseToObjectFunctions.multipleMongooseToObject(allEvents)
 
-            res.render('event', {
-                customer: req.session.customer,
-                event: MongooseToObjectFunctions.mongooseToObject(_event),
-                ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes),
-                eventData
-            });
+            const minPrice = Math.min(..._ticketTypes.map(type => type.price));
+
+            res.render('event', { customer: req.session.customer, event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes), minPrice});
         } catch (error) {
             console.log('Error in getEventDetail:', error.message);
             return res.status(500).send('Internal Server Error');
@@ -55,13 +50,11 @@ class EventDetailController {
                 name: faker.string.alphanumeric(5),
                 discount: faker.number.int({min: 5, max: 50}), // Giảm giá ngẫu nhiên từ 5% đến 50%
             }))
-            const eventData = MongooseToObjectFunctions.multipleMongooseToObject(allEvents)
-            
             res.render('eventDetail/booking.ejs', {
+                customer: req.session.customer,
                 event: MongooseToObjectFunctions.mongooseToObject(_event),
                 ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes),
-                vouchers,
-                eventData
+                vouchers
             });
         } catch (error) {
             console.log('Error in getBookingTicket:', error.message);
