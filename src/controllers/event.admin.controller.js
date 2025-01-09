@@ -24,21 +24,17 @@ class EventController {
             console.log('Creating new event with data:', req.body);
 
             const {
-                title,
                 addressProvince,
                 addressDetail,
                 startDate,
                 endDate,
-                eventLogo,
-                eventBanner,
-                organizerId,
+                visitCount,
                 category,
                 status,
-                description,
-                eventType,
-                venueName,
-                district,
-                ticketTypes
+                tilte,
+                ticketType,
+                organizerId,
+                imgUrl
             } = req.body;
 
             // Validate ticket types
@@ -50,26 +46,24 @@ class EventController {
 
             // Create new event instance
             const newEvent = new EventModel({
-                title,
                 addressProvince,
                 addressDetail,
                 startDate,
                 endDate,
-                eventLogo,
-                eventBanner,
-                organizerId,
+                visitCount,
                 category,
-                status: status || 'Draft',
-                description,
-                eventType,
-                venueName,
-                district,
+                status,
+                tilte,
+                ticketType,
+                organizerId,
+                imgUrl,
                 ticketTypes: ticketTypes.map(ticket => ({
-                    ticketTypeId: Math.random().toString(36).substring(7),
+                    ticketTypeID: Math.random().toString(36).substring(7),
                     name: ticket.name,
                     quantity: Number(ticket.quantity),
                     price: Number(ticket.price),
-                    description: ticket.description || ''
+                    description: ticket.description || '',
+                    imgUrl: ticket.imgUrl || ''
                 }))
             });
 

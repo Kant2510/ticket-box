@@ -1,73 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket Box - Admin Page</title>
-  <!-- Google Web Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-          href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"
-          rel="stylesheet"
-  />
-  <!-- Icon Font Stylesheet -->
-  <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-          rel="stylesheet"
-  />
-  <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-          rel="stylesheet"
-  />
-  <link href="css/admin-style.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Box - Admin Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="/css/admin-style.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+        .search-container, .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .search-input, #statusFilter, #dateFilter {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 200px;
+        }
+        .search-input:focus, #statusFilter:focus, #dateFilter:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .event-wrapper {
+            margin-top: 20px;
+        }
+        .event-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .event-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .on-sale {
+            color: #28a745;
+        }
+        .sold-out {
+            color: #dc3545;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .pagination button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+        }
+    </style>
 </head>
 <body>
-  <%- include('admin-head') -%>
+    <%- include('admin-head') -%>
     <div style="padding-top:80px;" class="admin-container">
-        <!-- Nút chuyển đến trang tạo sự kiện -->
-        <button class="save-btn" onclick="redirectToCreateEvent()">Create Event</button>
+        <h2>Events List</h2>
 
-        <label style="margin: 20px 0px">Events Currently On Sale</label>
-
-        <!-- Thanh tìm kiếm -->
-        <div style="margin: 20px 0px" class="search-container">
+        <div class="search-container">
             <input type="text" class="search-input" placeholder="Search events..." id="searchInput">
         </div>
 
-        <div class="event-wrapper">
-            <!-- Sự kiện 1 -->
-            <button class="event-item" onclick="redirectToEventInfo(1)">
-                <img src="/img/event1.jpg" alt="Event 1">
-                <div class="event-info">
-                    <h3>Event 1</h3>
-                    <p>Date: 2023-08-01</p>
-                    <p>Time: 18:00</p>
-                </div>
-            </button>
+        <div class="filter-container">
+            <select id="statusFilter">
+                <option value="">All Status</option>
+                <option value="on-sale">On Sale</option>
+                <option value="sold-out">Sold Out</option>
+            </select>
 
-            <!-- Sự kiện 2 -->
-            <button class="event-item" onclick="redirectToEventInfo(2)">
-                <img src="/img/event2.jpg" alt="Event 2">
-                <div class="event-info">
-                    <h3>Event 2</h3>
-                    <p>Date: 2023-09-01</p>
-                    <p>Time: 19:00</p>
-                </div>
-            </button>
+            <input type="date" id="dateFilter">
+        </div>
 
-            <!-- Sự kiện 3 -->
-            <button class="event-item" onclick="redirectToEventInfo(3)">
-                <img src="/img/event2.jpg" alt="Event 2">
-                <div class="event-info">
-                    <h3>Event 3</h3>
-                    <p>Date: 2023-09-01</p>
-                    <p>Time: 19:00</p>
+        <div class="event-wrapper" id="eventList">
+            <% events.forEach(function(event) { %>
+                <div class="event-item" onclick="window.location.href='/admin/event/<%= event._id %>'">
+                    <div class="event-info">
+                        <h3><%= event.name %></h3>
+                        <p>Date: <%= new Date(event.date).toLocaleDateString() %></p>
+                        <p>Time: <%= event.time %></p>
+                        <p class="<%= event.status %>">
+                            Status: <%= event.status === 'on-sale' ? 'On Sale' : 'Sold Out' %>
+                        </p>
+                        <p>Available Tickets: <%= event.availableTickets %></p>
+                    </div>
                 </div>
-            </button>
+            <% }); %>
+        </div>
 
-            <!-- Các sự kiện khác tương tự -->
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="?page=<%= currentPage - 1 %>"><button>Previous</button></a>
+            <% } %>
+            <% if (hasNextPage) { %>
+                <a href="?page=<%= currentPage + 1 %>"><button>Next</button></a>
+            <% } %>
         </div>
     </div>
+
+    <script>
+        // Client-side filtering
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const eventList = document.getElementById('eventList');
+
+        function filterEvents() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusValue = statusFilter.value;
+            const dateValue = dateFilter.value;
+
+            const eventItems = eventList.getElementsByClassName('event-item');
+
+            Array.from(eventItems).forEach(item => {
+                const name = item.querySelector('h3').textContent.toLowerCase();
+                const status = item.querySelector('.event-info p:nth-child(3)').textContent;
+                const date = item.querySelector('.event-info p:nth-child(1)').textContent;
+
+                const matchesSearch = name.includes(searchTerm);
+                const matchesStatus = !statusValue || status.includes(statusValue);
+                const matchesDate = !dateValue || date.includes(dateValue);
+
+                item.style.display = matchesSearch && matchesStatus && matchesDate ? 'block' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterEvents);
+        statusFilter.addEventListener('change', filterEvents);
+        dateFilter.addEventListener('change', filterEvents);
+    </script>
 </body>
 </html>

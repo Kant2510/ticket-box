@@ -1,7 +1,20 @@
-import eventRouter from "./event.route.js";
-import express from "express";
+import express from 'express';
+import voucherRouter from './voucher.route.js';
+import eventRouter from './event.route.js';
+import eventListRouter from './eventList.route.js';
+import policyRouter from './policy.route.js';
+
 const router = express.Router();
 
-router.use("/admin", eventRouter);
+// Admin routes
+router.use('/adminPage-list', eventListRouter);  // Sửa lại route này
+router.use('/admin', eventRouter);
+router.use('/admin-policy', policyRouter);
 
-export default router
+// Voucher routes
+router.use('/admin-voucher', voucherRouter);   
+router.get('/admin-voucher', (req, res) => {
+    res.render('admin-voucher');
+});
+
+export default router;

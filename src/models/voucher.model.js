@@ -7,9 +7,10 @@ const voucherSchema = new Schema(
             type: String,
             required: true,
         },
-        discount: {
+        discountValue: {
             type: Number,
             required: true,
+            min : 1, max : 100
         },
         maxDiscount: {
             type: Number,
@@ -26,6 +27,7 @@ const voucherSchema = new Schema(
         quantity: {
             type: Number,
             required: true,
+            min : 1
         },
     },
     {

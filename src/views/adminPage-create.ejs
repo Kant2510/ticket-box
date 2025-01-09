@@ -34,63 +34,27 @@
     <div class="Form1" id="Form1">
       <div class="upload">
         <div class="event-image">
-          <div class="event-logo">
-            <input type="file" id="logo-image" accept="image/*">
+          <div class="imgURL">
+            <input type="file" id="imgURL" accept="image/*">
             <img id="logo-preview" alt="Logo Preview" >
           </div>
-          <div class="event-banner">
-            <input type="file" id="banner-image" accept="image/*">
-            <img id="banner-preview" alt="Banner Preview">
-          </div>
         </div>
-        <div class="event-name">
-          <label class="title" for="event-name">Event Name</label>
-          <input type="text" id="event-name" placeholder="Enter event name">
+        <div class="tilte">
+          <label class="title" for="tilte">Event Name</label>
+          <input type="text" id="tilte" placeholder="Enter event name">
         </div>
       </div>
       <div class="upload" id="upload-event-address">
         <label class="title" for="event-address">Event Address</label>
-        
-        <!-- Offline/Online Radio Buttons -->
-        <div class="form-group" >
-          <input type="radio" id="offline" name="event-type" value="offline" />
-          <label for="offline">Offline</label>
-          <input type="radio" id="online" name="event-type" value="online" />
-          <label for="online">Online</label>
-        </div>
-        <label for="venue-name">Venue Name</label>
-        <input type="text" id="venue-name" name="venue-name" placeholder="Enter the venue name" />
-        <!-- City/Province TextBlock -->
-        <div class="form-group">
-          <div class="address-province">
-          <label for="city-province">City/Province</label>
-          <select id="city-province" name="city-province">
-            <option value="">Select a city or province</option>
-            <option value="Hanoi">Hanoi</option>
-            <option value="Ho Chi Minh City">Ho Chi Minh City</option>
-          </select>
-          </div>
-          <div class="address-district">
-            <label for="district">District</label>
-            <select id="district" name="district">
-              <option value="">Select a district</option>
-              <option value="Dong Da">Dong Da</option>
-              <option value="Ha Dong">Ha Dong</option>
-            </select>
-          </div>
-        </div>
-        <!-- Details TextBlock -->
+        <input type="text" id="address-province" placeholder="Enter address province">
         <label for="event-details">Event Details</label>
-        <input type="text" id="event-details" name="event-details" placeholder="Enter the event address" />
+        <input type="text" id="event-details" name="event-details" placeholder="Enter the event address detail" />
+        <label for="visitcount">Visit Count</label>
+        <input type="text" id="visitcount" name="visitcount" placeholder="Enter the number of visit count" />
       </div>
       <div class="upload" >
         <label for="event-category">Event Category</label>
-          <select id="event-category" name="event-category">
-            <option value="">Select a category</option>
-            <option value="Music">Music</option>
-            <option value="Sport">Sport</option>
-          </select>
-        
+        <input type="text" id="event-category" name="event-category" placeholder="Enter the event category" />
       </div>
       <div class="upload" id="ticket-time">
         <div class="input-field">
@@ -101,10 +65,6 @@
           <label for="end-time">Event End Time:</label>
           <input type="datetime-local" id="end-time" name="end-time">
         </div>
-      </div>
-      <div class="upload">
-        <label>Event description</label>
-        <textarea id="description" name="description" rows="20" cols="30" ></textarea>
       </div>
       <div class="upload" id="organizer">
         <label class="title" for="event-organizer">Event Organizer</label>
@@ -254,7 +214,7 @@
     
     async function saveDataToServer() {
         try {
-          const eventLogoInput = document.getElementById('logo-image');
+          const eventLogoInput = document.getElementById('imgURL');
           const eventBannerInput = document.getElementById('banner-image');
 
           if (!eventLogoInput.files[0] || !eventBannerInput.files[0]) {
@@ -268,7 +228,7 @@
             throw new Error('Failed to process image files');
           }
             const formData = {
-              title: document.getElementById('event-name').value,
+              title: document.getElementById('tilte').value,
               addressProvince: document.getElementById('city-province').value,
               addressDetail: document.getElementById('event-details').value,
               startDate: new Date(document.getElementById('start-time').value),
@@ -341,7 +301,7 @@
         document.getElementById('addTicketForm').style.display = 'none';
         clearTicketForm();
     });
-    document.getElementById('logo-image').addEventListener('change', function (event) {
+    document.getElementById('imgURL').addEventListener('change', function (event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
