@@ -19,10 +19,10 @@ const getHomepage = async (req, res) => {
         // console.log('eventData:', eventData)
         try {
                 const customer = req.session.customer;
-                res.render('index', { customer, events, musicEvents, artEvents, newReleaseEvents, eventData })
+                res.render('index', {events, musicEvents, artEvents, newReleaseEvents, eventData })
 
         } catch (error) {
-                res.render('index', { customer: null, events, musicEvents, artEvents, newReleaseEvents, eventData })
+                res.render('index', {events, musicEvents, artEvents, newReleaseEvents, eventData })
         }
     // return res.render('index')
 

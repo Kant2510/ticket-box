@@ -171,7 +171,9 @@
 
 
 <body>
+<% if(eventData){ %>
 <div id="all-events" data-event-info="<%- encodeURIComponent(JSON.stringify(eventData)) %>"></div>
+<%}%>
 <!-- Spinner Start -->
 <div
         id="spinner"
