@@ -102,10 +102,16 @@ class AccessController {
     }
     // TODO: API logout
     async logout(req, res, next) {
-        new OkResponse({
-            message: 'Logout successfully',
-            metadata: await AccessService.logout(req.session.keyStore), // keyStore is from middleware authentication
-        }).send(res)
+        // new OkResponse({
+        //   message: 'Logout successfully',
+        //   metadata: await accessService.logout(req.keyStore) // keyStore is from middleware authentication
+        // }).send(res)
+        req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).send("Error logging out");
+            }
+            res.redirect('/login'); // Redirect to login after logout
+        });
     }
 
     // TODO: API refresh token
