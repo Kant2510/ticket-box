@@ -26,7 +26,7 @@
 
             <hr class="event-details-line" />
             <div class="book-ticket-btn-container">
-                <p class="from">From<span class="min-price">500000</span> <span class="vnd">đ</span></p>
+                <p class="from">From<span class="min-price"><%= minPrice %></span> <span class="vnd">đ</span></p>
                 <a href="<%= event._id %>/booking"><button class="book-ticket-btn">Đặt ngay</button></a>
             </div>
         </div>
@@ -38,13 +38,28 @@
 
     <section class="introduction">
         <div class="introduction-wrapper background-grey">
-            <h3 class="event-heading-tit\e">About</h3>
+            <h3 class="event-heading-title">About</h3>
             <p class="intro-text mt-8"><%= event.description %></p>
         </div>
     </section>
     <section class="introduction mt-8">
         <div class="introduction-wrapper background-purple">
             <h3 class="event-heading-title">Ticket Information</h3>
+                <% ticketTypes.forEach(type => { %>
+                    <div class="ticket-type">
+                        <div class="ticket-info">
+                        <strong><%= type.name %></strong>
+                        </div>
+                        <div class="ticket-quantity">
+                        <% if (type.quantity === 0) { %>
+                            <div class="sold-out">Sold Out</div>
+                        <% } else { %>
+                            <span class="min-price font-size-med"><%= type.price %></span>
+                            <span class="vnd font-size-med">đ</span>
+                        <% } %>
+                        </div>
+                    </div>
+                <% }); %>
         </div>
     </section>
     <section class="introduction mt-8">

@@ -128,8 +128,8 @@ p<%- include('head')-%>
                 <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px">
                     <h1 class="display-5 mb-3">Events</h1>
                     <p>
-                        Explore our amazing collection of films, from thrilling action blockbusters to unique
-                        artistic masterpieces.
+                        Explore our amazing collection of events, from exhilarating music concerts to unique
+                        artistic performances.
                     </p>
                 </div>
             </div>
@@ -173,16 +173,13 @@ p<%- include('head')-%>
                                             detail</a>
                                     </small>
                                     <small class="w-50 text-center py-2">
-                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add
+                                        <a class="text-body" href="/detail/<%=musicEvent._id%>/booking"><i class="fa fa-shopping-bag text-primary me-2"></i>Add
                                             to cart</a>
                                     </small>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
-                    <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <a class="btn btn-accent rounded-pill py-3 px-5" href="/product">Browse More Movies</a>
-                    </div>
                 </div>
             </div>
             <div id="tab-2" class="tab-pane fade show p-0">
@@ -208,16 +205,13 @@ p<%- include('head')-%>
                                             detail</a>
                                     </small>
                                     <small class="w-50 text-center py-2">
-                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add
+                                        <a class="text-body" href="/detail/<%=performanceOrArtEvent._id%>/booking"><i class="fa fa-shopping-bag text-primary me-2"></i>Add
                                             to cart</a>
                                     </small>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
-                    <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <a class="btn btn-accent rounded-pill py-3 px-5" href="/product">Browse More Movies</a>
-                    </div>
                 </div>
             </div>
             <div id="tab-3" class="tab-pane fade show p-0">
@@ -243,16 +237,13 @@ p<%- include('head')-%>
                                             detail</a>
                                     </small>
                                     <small class="w-50 text-center py-2">
-                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add
+                                        <a class="text-body" href="/detail/<%=otherEvent._id%>/booking"><i class="fa fa-shopping-bag text-primary me-2"></i>Add
                                             to cart</a>
                                     </small>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
-                    <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <a class="btn btn-accent rounded-pill py-3 px-5" href="/product">Browse More Movies</a>
-                    </div>
                 </div>
             </div>
         </div>

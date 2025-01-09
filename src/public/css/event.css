@@ -228,3 +228,34 @@ h1{
     width: 24vw;
     height: 200px;
 }
+
+.event-heading-title {
+    color: #1A1A18;
+}
+
+.ticket-type {
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: space-between;
+}
+
+.ticket-info strong {
+    font-size: 1.2em;
+    color: #FFF0F5;
+}
+
+.font-size-med {
+    font-size: 20px;
+}
+
+.sold-out {
+    background: #e63946;
+    color: #FFF0F5;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-align: center;
+}

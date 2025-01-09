@@ -21,7 +21,9 @@ class EventDetailController {
                 return res.status(404).send('Ticket types not found');
             }
 
-            res.render('event', { customer: req.session.customer, event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes)});
+            const minPrice = Math.min(..._ticketTypes.map(type => type.price));
+
+            res.render('event', { customer: req.session.customer, event: MongooseToObjectFunctions.mongooseToObject(_event), ticketTypes: MongooseToObjectFunctions.multipleMongooseToObject(_ticketTypes), minPrice});
         } catch (error) {
             console.log('Error in getEventDetail:', error.message);
             return res.status(500).send('Internal Server Error');
