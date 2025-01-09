@@ -9,6 +9,10 @@ const ticketType = new Schema(
             type: String,
             required: true,
         },
+        name: {
+            type: String,
+            required: true,
+        },
         price: {
             type: Number,
             required: true,
@@ -20,6 +24,10 @@ const ticketType = new Schema(
         description: {
             type: String,
             required: true,
+        },
+        imgUrl: {
+            type: String,
+            required: false,
         },
     },
     {

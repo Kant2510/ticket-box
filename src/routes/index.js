@@ -16,7 +16,8 @@ import profileRoutes from './profile/index.js'
 const router = express.Router()
 import {ensureAuthen} from "../middlewares/auth.js";
 
-import adminRouter  from './admin/index.js'
+import adminRouter  from './admin/index.js'  //Tạo event và ticket
+import getVoucher from '../controllers/voucher.admin.controller.js'
 // TODO: Main Route
 
 // accessRoutes
@@ -35,6 +36,7 @@ router.use('/detail', eventDetailRoutes)
 
 
 
+
 // ShoppingCartAPIRoutes
 router.use('/', shoppingCartRoutes)
 
@@ -44,6 +46,7 @@ router.use(eventRoutes)
 
 
 router.use(adminRouter)
+//Trang voucher của admin
 
 
 // orderRoutes
