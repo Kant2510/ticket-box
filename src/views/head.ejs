@@ -234,6 +234,28 @@
                 <a href="/about" class="nav-item nav-link">About Us</a>
                 <a href="/product" class="nav-item nav-link">Products</a>
                 <a href="/contact" class="nav-item nav-link">Contact Us</a>
+                <% if (typeof active !== 'undefined' && active) { %>
+                <a
+                        href="/"
+                        class="nav-item nav-link <%= active == 'home' ? 'active' : ''%>"
+                >Home</a
+                >
+                <a
+                        href="/about"
+                        class="nav-item nav-link <%= active == 'aboutus' ? 'active' : ''%>"
+                >About Us</a
+                >
+                <a
+                        href="/product"
+                        class="nav-item nav-link <%= active == 'product' ? 'active' : ''%>"
+                >Movies</a
+                >
+                <a
+                        href="/contact"
+                        class="nav-item nav-link <%= active == 'contact' ? 'active' : ''%>"
+                >Contact Us</a
+                >
+                <%}%>
             </div>
             <div class="d-flex w-30 justify-content-end">
                 <div class="d-flex justify-content-center">
