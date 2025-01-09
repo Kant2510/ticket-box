@@ -4,7 +4,7 @@ import EventModel from '../models/event.model.js';
 import TicketTypeService from '../services/ticket_type.service.js';
 const getHomepage = async (req, res) => {
         const allEvents = await EventModel.find()
-        console.log('allEvents:', allEvents)
+        // console.log('allEvents:', allEvents)
         const events = await EventService.findRecomendedEvents()
 
         const musicEvents = await EventService.findByCategory({ category: 'Music' })
