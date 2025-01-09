@@ -41,6 +41,11 @@
                     />
                 </div>
             </div>
+            <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                <p class="error-message">
+                    <i class="fas fa-exclamation-circle"></i> <%= errorMessage %>
+                </p>
+            <% } %>
             <button class="login-btn" type="submit">
                 Verify <i class="fas fa-check"></i>
             </button>
@@ -53,4 +58,23 @@
 </div>
 
 </body>
+<script>
+    document.getElementById('resendCode').addEventListener('click', async (event) => {
+        event.preventDefault(); // Ngăn chặn tải lại trang
+        const response = await fetch('/resend-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('A new verification code has been sent to your email.');
+        } else {
+            alert(`Failed to resend code: ${result.message}`);
+        }
+    });
+</script>
+
 </html>

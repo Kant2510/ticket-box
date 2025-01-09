@@ -2,8 +2,8 @@
 
 import { OkResponse } from '../core/success.response.js'
 // import { BadRequestResponse } from '../core/error.response.js'
-import accessService from '../services/access.service.js'
-
+import AccessService from '../services/access.service.js'
+import sendVerificationEmail from '../services/emailSend.service.js'
 class AccessController {
     async getLogin(req, res) {
         res.render('login', { errorMessage: null })
@@ -21,7 +21,7 @@ class AccessController {
             return res.redirect('/adminPage-create');
         }
         try {
-                const metadata = await accessService.login(req.body)
+                const metadata = await AccessService.login(req.body)
                 console.log('metadata:', metadata)
                 // if(metadata && metadata.customer && metadata.tokens){
                 req.session.customer = metadata.customer // Store user in session
@@ -36,7 +36,7 @@ class AccessController {
     // TODO: API signup
     async signUp(req, res) {
         try {
-            const metadata = await accessService.signUp(req.body)
+            const metadata = await AccessService.signUp(req.body)
 
             req.session.email = metadata.email
             req.session.password = metadata.password
@@ -45,31 +45,66 @@ class AccessController {
             if (metadata) {
                 res.redirect('/verify')
             }
-            else res.render('signup', { error: 'Email already existed' })
+            else {
+                console.log('Email already existed')
+                res.render('signup', { errorMessage: 'Email already existed' })}
         } catch (error) {
-            res.render('signup', { error: error.message })
+            res.render('signup', { errorMessage: error.message })
         }
     }
+    
     async verify(req, res){
-        const code = req.body
+        const code = req.body.verification_code; // Lấy đúng trường từ req.body
         const email = req.session.email
         const password = req.session.password
         const verificationCode = req.session.verificationCode
-
-        try{
-            const metadata = await accessService.verify({email, password})
-            if(metadata && metadata.customer && metadata.tokens){
-                res.redirect('/login')
+        parseInt(verificationCode)
+        console.log('code:', code)
+        console.log('verificationCode:', verificationCode)
+        if (code != verificationCode){
+            res.render('verify', {errorMessage: 'Verification code is incorrect'})
+        }
+        else{
+            try{
+                const metadata = await AccessService.verify({email, password})
+                if(metadata && metadata.customer && metadata.tokens){
+                    res.redirect('/login')
+                }
+            } catch(error){
+                res.render('verify', {errorMessage: error.message})
             }
-        } catch(error){
-            res.render('verify', {error: error.message})
+        }
+       
+    }
+    async resendCode(req, res){
+            try {
+                const email = req.session.email; // Lấy email từ session
+        
+                if (!email) {
+                    res.render('verify', {errorMessage: 'No email found'});
+                }
+        
+                // Tạo mã xác minh mới
+                const newVerificationCode = Math.floor(100000 + Math.random() * 900000);
+        
+                // Lưu mã mới vào session
+                req.session.verificationCode = newVerificationCode;
+        
+                // Gửi email xác minh mới
+                await sendVerificationEmail(email, newVerificationCode);
+        
+                console.log(`Resent verification code to ${email}`);
+                res.json({ success: true, message: 'Verification code resent' });
+            } catch (error) {
+                console.error('Failed to resend verification code:', error);
+                res.status(500).json({ success: false, message: 'Failed to resend code' });
         }
     }
     // TODO: API logout
     async logout(req, res, next) {
         new OkResponse({
             message: 'Logout successfully',
-            metadata: await accessService.logout(req.session.keyStore), // keyStore is from middleware authentication
+            metadata: await AccessService.logout(req.session.keyStore), // keyStore is from middleware authentication
         }).send(res)
     }
 
@@ -83,7 +118,7 @@ class AccessController {
         // TODO: v2 optimize
         new OkResponse({
             message: 'Refresh token successfully',
-            metadata: await accessService.refreshTokenV2({
+            metadata: await AccessService.refreshTokenV2({
                 refreshToken: req.refreshToken,
                 user: req.user,
                 keyStore: req.keyStore,
