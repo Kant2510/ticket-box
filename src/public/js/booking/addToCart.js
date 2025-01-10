@@ -17,6 +17,18 @@ const debounce = (func, wait, immediate) => {
     };
 };
 
+const throttle = (func, limit) => {
+    let inThrottle;
+    return function () {
+        const context = this, args = arguments;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => (inThrottle = false), limit);
+        }
+    };
+};
+
 
 const ClickAddToCartBtn = async () => {
     const CustomerID = CustomerData._id;
@@ -44,11 +56,12 @@ const ClickAddToCartBtn = async () => {
 
         const updatedCart = await response.json();
         console.log('Shopping cart updated:', updatedCart);
+        alert('Đã thêm đơn vào giỏ hàng của bạn');
     } catch (error) {
         console.error('Error updating shopping cart:', error);
     }
 };
 
-const debouncedClickAddToCartBtn = debounce(ClickAddToCartBtn, 3000);
+const throttledClickAddToCartBtn = throttle(ClickAddToCartBtn, 3000);
 
-addToCartBTNElement.addEventListener('click', debouncedClickAddToCartBtn);
+addToCartBTNElement.addEventListener('click', throttledClickAddToCartBtn);

@@ -1,4 +1,4 @@
-p<%- include('head')-%>
+<%- include('head', { active: 'product' }) -%>
 
 <style>
     .event-title {
@@ -102,7 +102,8 @@ p<%- include('head')-%>
                     <div class="row justify-content-center">
                         <% specialEvents.forEach((event) => { %>
                             <div class="col-2">
-                                <a href="/detail/<%=event._id%>"><img src="<%= event.imgURL%>" alt="Banner" class="img-fluid fixed-size"></a>
+                                <a href="/detail/<%=event._id%>"><img src="<%= event.imgURL%>" alt="Banner" height="120px" width="200px"></a>
+                                <div><%= event.title%></div>
                             </div>
                         <% }); %>
                     </div>
@@ -115,7 +116,10 @@ p<%- include('head')-%>
                     <div class="row justify-content-center">
                         <% eventsNearYou.forEach((event) => { %>
                             <div class="col-2">
-                                <a href="/detail/<%=event._id%>"><img src="https://ticketbox.vn/_next/image?url=https%3A%2F%2Fimages.tkbcdn.com%2F2%2F360%2F479%2Fts%2Fds%2F8b%2Fbf%2Fc6%2F3178ade25c2e3cd10fd2517f523cf060.jpg&w=640&q=75" alt="something" class="img-fluid"></a>
+                                <a href="/detail/<%=event._id%>">
+                                    <img src="<%= event.imgURL%>" alt="something" height="120px" width="200px">
+                                </a>
+                                <div><%= event.title%></div>
                             </div>
                         <% }); %>
                     </div>
@@ -128,8 +132,8 @@ p<%- include('head')-%>
                 <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px">
                     <h1 class="display-5 mb-3">Events</h1>
                     <p>
-                        Explore our amazing collection of films, from thrilling action blockbusters to unique
-                        artistic masterpieces.
+                        Explore our amazing collection of events, from exhilarating music concerts to unique
+                        artistic performances.
                     </p>
                 </div>
             </div>
@@ -156,7 +160,7 @@ p<%- include('head')-%>
                         <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="product-item">
                                 <div class="position-relative bg-light overflow-hidden">
-                                    <img class="img-fluid w-100 fixed-size" src="https://ticketbox.vn/_next/image?url=https%3A%2F%2Fimages.tkbcdn.com%2F2%2F360%2F479%2Fts%2Fds%2F8b%2Fbf%2Fc6%2F3178ade25c2e3cd10fd2517f523cf060.jpg&w=640&q=75" alt="" />
+                                    <img class="img-fluid w-100 fixed-size" src="<%= musicEvent.imgURL%>" alt="" />
                                     <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                         New
                                     </div>
@@ -173,16 +177,13 @@ p<%- include('head')-%>
                                             detail</a>
                                     </small>
                                     <small class="w-50 text-center py-2">
-                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add
+                                        <a class="text-body" href="/detail/<%=musicEvent._id%>/booking"><i class="fa fa-shopping-bag text-primary me-2"></i>Add
                                             to cart</a>
                                     </small>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
-                    <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <a class="btn btn-accent rounded-pill py-3 px-5" href="/product">Browse More Movies</a>
-                    </div>
                 </div>
             </div>
             <div id="tab-2" class="tab-pane fade show p-0">
@@ -191,7 +192,7 @@ p<%- include('head')-%>
                         <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="product-item">
                                 <div class="position-relative bg-light overflow-hidden">
-                                    <img class="img-fluid w-100 fixed-size" src="https://ticketbox.vn/_next/image?url=https%3A%2F%2Fimages.tkbcdn.com%2F2%2F360%2F479%2Fts%2Fds%2F8b%2Fbf%2Fc6%2F3178ade25c2e3cd10fd2517f523cf060.jpg&w=640&q=75" alt="" />
+                                    <img class="img-fluid w-100 fixed-size" src="<%= performanceOrArtEvent.imgURL%>" alt="" />
                                     <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                         New
                                     </div>
@@ -208,16 +209,13 @@ p<%- include('head')-%>
                                             detail</a>
                                     </small>
                                     <small class="w-50 text-center py-2">
-                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add
+                                        <a class="text-body" href="/detail/<%=performanceOrArtEvent._id%>/booking"><i class="fa fa-shopping-bag text-primary me-2"></i>Add
                                             to cart</a>
                                     </small>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
-                    <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <a class="btn btn-accent rounded-pill py-3 px-5" href="/product">Browse More Movies</a>
-                    </div>
                 </div>
             </div>
             <div id="tab-3" class="tab-pane fade show p-0">
@@ -226,7 +224,7 @@ p<%- include('head')-%>
                         <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="product-item">
                                 <div class="position-relative bg-light overflow-hidden">
-                                    <img class="img-fluid w-100 fixed-size" src="https://ticketbox.vn/_next/image?url=https%3A%2F%2Fimages.tkbcdn.com%2F2%2F360%2F479%2Fts%2Fds%2F8b%2Fbf%2Fc6%2F3178ade25c2e3cd10fd2517f523cf060.jpg&w=640&q=75" alt="" />
+                                    <img class="img-fluid w-100 fixed-size" src="<%= otherEvent.imgURL%>" alt="" />
                                     <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                         New
                                     </div>
@@ -243,16 +241,13 @@ p<%- include('head')-%>
                                             detail</a>
                                     </small>
                                     <small class="w-50 text-center py-2">
-                                        <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Add
+                                        <a class="text-body" href="/detail/<%=otherEvent._id%>/booking"><i class="fa fa-shopping-bag text-primary me-2"></i>Add
                                             to cart</a>
                                     </small>
                                 </div>
                             </div>
                         </div>
                     <% }); %>
-                    <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                        <a class="btn btn-accent rounded-pill py-3 px-5" href="/product">Browse More Movies</a>
-                    </div>
                 </div>
             </div>
         </div>

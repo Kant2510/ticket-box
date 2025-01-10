@@ -23,6 +23,10 @@ class ShoppingCartController {
                 );
             }
 
+            _cartEvents.forEach((event, index) => {
+                event.CartID = _customerCarts[index]._id;
+            });
+
             const page = parseInt(req.query.page) || 1;
             const limit = 3;
             const startIndex = (page - 1) * limit;
@@ -58,6 +62,24 @@ class ShoppingCartController {
         } catch (error) {
             console.error('Error updating shopping cart:', error);
             res.status(500).json({ error: 'Failed to update shopping cart' });
+        }
+    }
+
+    deleteShoppingCart = async (req, res) => {
+        const { selectedCartIDs } = req.body;
+        try {
+            const deletedCart = await ShoppingCart.deleteMany(
+                { _id: {$in: selectedCartIDs} }
+            );
+    
+            if (deletedCart.deletedCount > 0) {
+                res.status(200).json({ success: true, message: 'Items deleted successfully', deletedCount: deletedCart.deletedCount });
+            } else {
+                res.status(404).json({ success: false, message: 'No item found' });
+            }
+        } catch (error) {
+            console.error('Error deleting shopping cart:', error);
+            res.status(500).json({ error: 'Failed to delete shopping cart' });
         }
     }
 }

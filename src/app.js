@@ -31,7 +31,7 @@ app.get('/logout', (req, res) => {
 app.use((err, req, res, next) => {
   console.log(err);
   if (process.env.NODE_ENV === 'pro') {
-    return res.render('404');
+    return res.render('404', {eventData: null});
   } else {
     if (err) {
       console.error(err);

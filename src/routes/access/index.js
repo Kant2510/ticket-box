@@ -3,7 +3,6 @@ import express from 'express'
 import accessController from '../../controllers/access.controller.js'
 import forwardError from '../../utils/forwardError.js'
 import { authenticationV2 } from '../../middlewares/auth.js'
-
 const router = express.Router()
 // GET
 router.get('/login', accessController.getLogin)
@@ -13,6 +12,7 @@ router.get('/verify', accessController.getVerify)
 // TODO: route sign up
 router.post('/signup', forwardError(accessController.signUp))
 router.post('/verify', forwardError(accessController.verify))
+router.post('/resend-code', forwardError(accessController.resendCode))
 // TODO: route login
 router.post('/login', forwardError(accessController.login))
 

@@ -2,7 +2,7 @@
 
 // TODO: External modules
 import bcrypt from 'bcrypt';
-import nodemailer from 'nodemailer'; // Import nodemailer
+
 
 // TODO: Internal modules
 import customerModel from '../models/customer.model.js';
@@ -14,7 +14,7 @@ import ErrorResponses from '../core/error.response.js';
 import customerService from './customer.service.js';
 
 const { NotFoundRequest, BadRequest, UnauthorizedRequest, ForbiddenRequest } = ErrorResponses;
-
+import sendVerificationEmail from './emailSend.service.js';
 const SALTY_ROUNDS = 10;
 
 const validatePassword = (password) => {
@@ -26,32 +26,6 @@ const validatePassword = (password) => {
   }
   return true;
 };
-// Function to send verification email
-async function sendVerificationEmail(email, code) {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'prairie2103@gmail.com', // Your email
-      pass: 'zjcp skco jaqt qeub' // Your email password or app password
-    }
-  });
-
-  const mailOptions = {
-    from: 'prairie2103@gmail.com',
-    to: email,
-    subject: 'Verification Code',
-    text: `Your verification code is: ${code}`
-  };
-
-  try {
-    console.log(`Attempting to send verification email to ${email}`);
-    await transporter.sendMail(mailOptions);
-    console.log(`Verification email sent to ${email}`);
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw new Error('Failed to send verification email. Please try again.');
-  }
-}
 
 // Function to prompt user for verification code
 async function promptUserForCode() {
@@ -79,7 +53,7 @@ class AccessService {
     // TODO: Step 2: Check password
     const match = await bcrypt.compare(password, foundCustomer.password);
     if (!match) {
-      throw new UnauthorizedRequest('Authentication failed')
+      throw new UnauthorizedRequest('Password is incorrect')
     }
 
     // TODO: Step 3: Create accessToken and refreshToken
@@ -256,4 +230,4 @@ class AccessService {
 
 }
 
-export default AccessService
+export default AccessService;
