@@ -1,5 +1,6 @@
 import express from 'express';
 import EventModel from '../../models/event.model.js';
+
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -8,7 +9,7 @@ router.get('/', async (req, res) => {
         const limit = 10;
 
         const totalEvents = await EventModel.countDocuments({ status: 'Active' });
-        
+
         const events = await EventModel.find({ status: 'Active' })
             .skip((page - 1) * limit)
             .limit(limit)
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
             location: event.addressDetail || 'Chưa cập nhật'
         }));
 
-        res.render('adminPage-list', {
+        res.render('eventList', { // Render template eventList
             events: transformedEvents,
             currentPage: page,
             hasNextPage: limit * page < totalEvents,

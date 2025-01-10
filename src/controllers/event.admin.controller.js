@@ -21,61 +21,120 @@ class EventController {
     // POST /event - Handle event creation
     async handleCreateEvent(req, res) {
         try {
-            console.log('Creating new event with data:', req.body);
-
+            console.log('Received event data');
+            
             const {
+                title,
                 addressProvince,
                 addressDetail,
                 startDate,
                 endDate,
-                visitCount,
                 category,
                 status,
-                tilte,
-                ticketType,
-                organizerId,
-                imgUrl
+                description,
+                eventType,
+                venueName,
+                district,
+                ticketTypes,
+                eventLogo,
+                eventBanner
             } = req.body;
 
-            // Validate ticket types
-            if (!ticketTypes || !Array.isArray(ticketTypes)) {
+            // Validate required fields
+            const requiredFields = {
+                title,
+                addressProvince,
+                addressDetail,
+                startDate,
+                endDate,
+                category,
+                description,
+                venueName,
+                district,
+                eventLogo,
+                eventBanner
+            };
+
+            const missingFields = Object.entries(requiredFields)
+                .filter(([_, value]) => !value)
+                .map(([key]) => key);
+
+            if (missingFields.length > 0) {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({
-                    message: 'Ticket types must be an array'
+                    message: 'Missing required fields',
+                    missingFields
                 });
             }
 
-            // Create new event instance
+            // Validate dates
+            const startDateTime = new Date(startDate);
+            const endDateTime = new Date(endDate);
+
+            if (isNaN(startDateTime) || isNaN(endDateTime)) {
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                    message: 'Invalid date format'
+                });
+            }
+
+            if (endDateTime <= startDateTime) {
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                    message: 'End date must be after start date'
+                });
+            }
+
+            // Validate ticket types
+            if (!Array.isArray(ticketTypes) || ticketTypes.length === 0) {
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                    message: 'At least one ticket type is required'
+                });
+            }
+
+            // Validate each ticket type
+            const invalidTickets = ticketTypes.filter(ticket => 
+                !ticket.name || 
+                typeof ticket.price !== 'number' || 
+                typeof ticket.quantity !== 'number' ||
+                !ticket.description
+            );
+
+            if (invalidTickets.length > 0) {
+                return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                    message: 'Invalid ticket type data',
+                    invalidTickets
+                });
+            }
+
+            // Create new event
             const newEvent = new EventModel({
+                title,
                 addressProvince,
                 addressDetail,
-                startDate,
-                endDate,
-                visitCount,
+                startDate: startDateTime,
+                endDate: endDateTime,
                 category,
-                status,
-                tilte,
-                ticketType,
-                organizerId,
-                imgUrl,
+                status: status || 'Active',
+                description,
+                eventType,
+                venueName,
+                district,
+                eventLogo,
+                eventBanner,
                 ticketTypes: ticketTypes.map(ticket => ({
-                    ticketTypeID: Math.random().toString(36).substring(7),
+                    ticketTypeId: Math.random().toString(36).substring(7),
                     name: ticket.name,
                     quantity: Number(ticket.quantity),
                     price: Number(ticket.price),
-                    description: ticket.description || '',
-                    imgUrl: ticket.imgUrl || ''
+                    description: ticket.description
                 }))
             });
 
-            // Save to database
             const savedEvent = await newEvent.save();
-            console.log('Event created successfully:', savedEvent);
+            console.log('Event created successfully:', savedEvent._id);
 
             res.status(HTTP_STATUS.CREATED).json({
                 message: 'Event created successfully',
                 data: savedEvent
             });
-
         } catch (error) {
             console.error('Error creating event:', error);
             res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

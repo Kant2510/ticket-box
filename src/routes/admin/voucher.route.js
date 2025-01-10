@@ -1,4 +1,3 @@
-// voucher.route.js
 import express from 'express';
 import Voucher from '../../models/voucher.model.js';
 const router = express.Router();

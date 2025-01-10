@@ -6,15 +6,17 @@ import policyRouter from './policy.route.js';
 
 const router = express.Router();
 
-// Admin routes
-router.use('/adminPage-list', eventListRouter);  // Sửa lại route này
+// Các route khác giữ nguyên
 router.use('/admin', eventRouter);
+router.use('/eventList', eventListRouter);
 router.use('/admin-policy', policyRouter);
 
-// Voucher routes
-router.use('/admin-voucher', voucherRouter);   
+// Chuyển /admin-voucher route lên trước để ưu tiên render page
 router.get('/admin-voucher', (req, res) => {
-    res.render('admin-voucher');
+    res.render('admin-voucher');  // Render EJS template
 });
+
+// API routes cho voucher
+router.use('/admin-voucher/api', voucherRouter);
 
 export default router;

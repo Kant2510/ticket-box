@@ -4,6 +4,7 @@ import express from 'express';
 import configViewEngine from './configs/viewEngine.js';
 import indexRoutes from './routes/index.js';
 import accessController  from './controllers/access.controller.js';
+import bodyParser from 'body-parser';
 import'./dbs/init.mongodb.js'
 import path from "path";
 const __dirname = path.resolve()
@@ -17,7 +18,8 @@ configViewEngine(app);
 app.get('/adminPage-create', (req, res) => {
   res.render('adminPage-create');
 });
-
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(indexRoutes)
 // Login and Admin routes
 
