@@ -32,7 +32,7 @@
         </div>
 
         <div class="event-container">
-            <img src="https://salt.tkbcdn.com/ts/ds/a2/2a/bc/29d53bc3ec2332fc8b659219fb42cd02.png" alt="banner event" class="event-banner" />
+            <img src="<%= event.imgURL %>" alt="banner event" class="event-banner" />
         </div>
     </section>
 
@@ -66,9 +66,9 @@
         <div class="introduction-wrapper background-blue">
             <h3 class="event-heading-title">Organizer</h3>
             <div class="organizer-wrapper mt-8">
-                <p class="organizer-text">This is organizer</p>
+                <p class="organizer-text"><%= event.organizerName ? event.organizerName : 'This is organizer' %></p>
                 <div class="organizer-img-wrapper">
-                    <img src="https://salt.tkbcdn.com/ts/ds/c0/19/1e/ee5eea71c3adb464bc9481ff9f7bb161.png" alt="" class="organizer-img" />
+                    <img src="<%= event.organizerImgURL ? event.organizerImgURL : 'https://salt.tkbcdn.com/ts/ds/c0/19/1e/ee5eea71c3adb464bc9481ff9f7bb161.png' %>" alt="" class="organizer-img" />
                 </div>
             </div>
         </div>

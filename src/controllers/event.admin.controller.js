@@ -37,7 +37,8 @@ class EventController {
                 district,
                 ticketType,
                 eventLogo,
-                eventBanner
+                eventBanner,
+                organizer,
             } = req.body;
 
             // Validate required fields
@@ -52,7 +53,8 @@ class EventController {
                 venueName,
                 district,
                 eventLogo,
-                eventBanner
+                eventBanner,
+                organizer,
             };
             console.log('Required fields:', requiredFields);
             const missingFields = Object.entries(requiredFields)
@@ -103,8 +105,6 @@ class EventController {
                     invalidTickets
                 });
             }
-            const height_random = Math.floor(Math.random() * 1000);
-            const width_random = Math.floor(Math.random() * 1000);
             // Create new event
             const newEvent = new EventModel({
                 title,
@@ -121,14 +121,21 @@ class EventController {
                 eventLogo,
                 eventBanner,
                 imgURL: eventBanner,
-                ticketType: ticketType.map(ticket => ({
-                    ticketTypeId: Math.random().toString(36).substring(7),
-                    name: ticket.name,
-                    quantity: Number(ticket.quantity),
-                    price: Number(ticket.price),
-                    description: ticket.description,
-                    imgUrl: 'https://picsum.photos/' + width_random + '/' + height_random
-                }))
+                visitCount: Math.floor(Math.random() * 1000),
+                ticketType: ticketType.map(ticket => {
+                    const height_random = Math.floor(Math.random() * 1000);
+                    const width_random = Math.floor(Math.random() * 1000);
+                    return {
+                        ticketTypeId: Math.random().toString(36).substring(7),
+                        name: ticket.name,
+                        quantity: Number(ticket.quantity),
+                        price: Number(ticket.price),
+                        description: ticket.description,
+                        imgUrl: 'https://picsum.photos/' + width_random + '/' + height_random
+                    }
+                }),
+                organizerName: organizer.name,
+                organizerImgURL: organizer.logo
             });
 
             const savedEvent = await newEvent.save();

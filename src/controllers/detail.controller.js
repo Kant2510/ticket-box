@@ -12,14 +12,14 @@ class EventDetailController {
                 return res.status(404).send('Event not found');
             }
             var _ticketTypes = [];
-            console.log(_event.ticketType);
-            if (_event.ticketType[0]?.ticketTypeId) {
+            console.log(_event);
+            if (_event.ticketType[0]?.name) {
                 _ticketTypes = _event.ticketType;
             }
             else {
                 _ticketTypes = await Promise.all(
                     _event.ticketType.map(async (_ticketTypeID) => {
-                        return ticketType.findOne({ ticketTypeID: _ticketTypeID });
+                        return ticketType.findOne({ ticketTypeID: _ticketTypeID.ticketTypeId });
                     })
                 );
             }
@@ -45,14 +45,14 @@ class EventDetailController {
                 return res.status(404).send('Event not found');
             }
             var _ticketTypes = [];
-            console.log(_event.ticketType);
-            if (_event.ticketType[0]?.ticketTypeId) {
+            console.log(_event);
+            if (_event.ticketType[0]?.name) {
                 _ticketTypes = _event.ticketType;
             }
             else {
                 _ticketTypes = await Promise.all(
                     _event.ticketType.map(async (_ticketTypeID) => {
-                        return ticketType.findOne({ ticketTypeID: _ticketTypeID });
+                        return ticketType.findOne({ ticketTypeID: _ticketTypeID.ticketTypeId });
                     })
                 );
             }

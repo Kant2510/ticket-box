@@ -79,6 +79,14 @@ const eventSchema = new Schema(
             type: String,
             required: false,
         },
+        organizerName: {
+            type: String,
+            required: false,
+        },
+        organizerImgURL: {
+            type: String,
+            required: false,
+        },
         imgURL: {
             type: String,
             required: false,

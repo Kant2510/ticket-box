@@ -26,15 +26,15 @@ const getHomepage = async (req, res) => {
         }
     // return res.render('index')
 
-        const recommendTicketTypes = await TicketTypeService.findByRecommend()
-        const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
-        // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes
-        const nowShowing = [recommendTicketTypes[0]].concat(newReleaseTicketTypes.slice(0, 3))
-        try{
-            res.render('index', {events, nowShowing })
+//         const recommendTicketTypes = await TicketTypeService.findByRecommend()
+//         const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
+//         // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes
+//         const nowShowing = [recommendTicketTypes[0]].concat(newReleaseTicketTypes.slice(0, 3))
+//         try{
+//             res.render('index', {events, nowShowing })
 
-    } catch (error) {
-            res.render('index', {events, nowShowing })    }
+//     } catch (error) {
+//             res.render('index', {events, nowShowing })    }
 
 }
 
