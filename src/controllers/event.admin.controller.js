@@ -35,7 +35,7 @@ class EventController {
                 eventType,
                 venueName,
                 district,
-                ticketTypes,
+                ticketType,
                 eventLogo,
                 eventBanner
             } = req.body;
@@ -54,7 +54,7 @@ class EventController {
                 eventLogo,
                 eventBanner
             };
-
+            console.log('Required fields:', requiredFields);
             const missingFields = Object.entries(requiredFields)
                 .filter(([_, value]) => !value)
                 .map(([key]) => key);
@@ -83,14 +83,14 @@ class EventController {
             }
 
             // Validate ticket types
-            if (!Array.isArray(ticketTypes) || ticketTypes.length === 0) {
+            if (!Array.isArray(ticketType) || ticketType.length === 0) {
                 return res.status(HTTP_STATUS.BAD_REQUEST).json({
                     message: 'At least one ticket type is required'
                 });
             }
 
             // Validate each ticket type
-            const invalidTickets = ticketTypes.filter(ticket => 
+            const invalidTickets = ticketType.filter(ticket => 
                 !ticket.name || 
                 typeof ticket.price !== 'number' || 
                 typeof ticket.quantity !== 'number' ||
@@ -103,7 +103,8 @@ class EventController {
                     invalidTickets
                 });
             }
-
+            const height_random = Math.floor(Math.random() * 1000);
+            const width_random = Math.floor(Math.random() * 1000);
             // Create new event
             const newEvent = new EventModel({
                 title,
@@ -112,19 +113,21 @@ class EventController {
                 startDate: startDateTime,
                 endDate: endDateTime,
                 category,
-                status: status || 'Active',
+                status: 'Active',
                 description,
                 eventType,
                 venueName,
                 district,
                 eventLogo,
                 eventBanner,
-                ticketTypes: ticketTypes.map(ticket => ({
+                imgURL: eventBanner,
+                ticketType: ticketType.map(ticket => ({
                     ticketTypeId: Math.random().toString(36).substring(7),
                     name: ticket.name,
                     quantity: Number(ticket.quantity),
                     price: Number(ticket.price),
-                    description: ticket.description
+                    description: ticket.description,
+                    imgUrl: 'https://picsum.photos/' + width_random + '/' + height_random
                 }))
             });
 

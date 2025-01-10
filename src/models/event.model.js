@@ -5,7 +5,7 @@ const COLLECTION_NAME = 'Events'
 // ticketType datatype
 const ticketType = new Schema(
     {
-        ticketTypeID: {
+        ticketTypeId: {
             type: String,
             required: true,
         },
@@ -72,14 +72,38 @@ const eventSchema = new Schema(
             required: false,
         },
         ticketType: {
-            type: [String],
+            type: [ticketType],
             required: false,
         },
         organizerID: {
             type: String,
             required: false,
         },
-        imgUrl: {
+        imgURL: {
+            type: String,
+            required: false,
+        },
+        description: {
+            type: String,
+            required: false,
+        },
+        eventType: {
+            type: String,
+            required: false,
+        },
+        eventLogo: {
+            type: String,
+            required: false,
+        },
+        eventBanner: {
+            type: String,
+            required: false,
+        },
+        venueName: {
+            type: String,
+            required: false,
+        },
+        district: {
             type: String,
             required: false,
         },

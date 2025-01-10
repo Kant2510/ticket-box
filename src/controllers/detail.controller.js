@@ -11,12 +11,20 @@ class EventDetailController {
             if (!_event) {
                 return res.status(404).send('Event not found');
             }
-            
-            const _ticketTypes = await Promise.all(
-                _event.ticketType.map(async (_ticketTypeID) => {
-                    return ticketType.findOne({ ticketTypeID: _ticketTypeID });
-                })
-            );
+            var _ticketTypes = [];
+            console.log(_event.ticketType);
+            if (_event.ticketType[0]?.ticketTypeId) {
+                _ticketTypes = _event.ticketType;
+            }
+            else {
+                _ticketTypes = await Promise.all(
+                    _event.ticketType.map(async (_ticketTypeID) => {
+                        return ticketType.findOne({ ticketTypeID: _ticketTypeID });
+                    })
+                );
+            }
+            console.log(_ticketTypes);  
+
             if (!_ticketTypes) {
                 return res.status(404).send('Ticket types not found');
             }
@@ -34,12 +42,23 @@ class EventDetailController {
             if (!_event) {
                 return res.status(404).send('Event not found');
             }
-        
-            const _ticketTypes = await Promise.all(
-                _event.ticketType.map(async (_ticketTypeID) => {
-                    return ticketType.findOne({ ticketTypeID: _ticketTypeID });
-                })
-            );
+            var _ticketTypes = [];
+            console.log(_event.ticketType);
+            if (_event.ticketType[0]?.ticketTypeId) {
+                _ticketTypes = _event.ticketType;
+            }
+            else {
+                _ticketTypes = await Promise.all(
+                    _event.ticketType.map(async (_ticketTypeID) => {
+                        return ticketType.findOne({ ticketTypeID: _ticketTypeID });
+                    })
+                );
+            }
+            // const _ticketTypes = await Promise.all(
+            //     _event.ticketType.map(async (_ticketTypeID) => {
+            //         return ticketType.findOne({ ticketTypeID: _ticketTypeID });
+            //     })
+            // );
             if (!_ticketTypes) {
                 return res.status(404).send('Ticket types not found');
             }

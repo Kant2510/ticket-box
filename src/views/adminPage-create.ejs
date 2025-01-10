@@ -326,26 +326,30 @@
           
                   // Collect form data according to Event model structure
                   const formData = {
-                      eventName: document.getElementById('event-name').value,
+                      title: document.getElementById('event-name').value,
                       eventType: document.querySelector('input[name="event-type"]:checked')?.value,
                       
                       // Images
-                      logoImage: eventLogo,
-                      bannerImage: eventBanner,
+                      eventLogo: eventLogo,
+                      eventBanner: eventBanner,
                       
                       // Venue information
-                      venue: {
-                          name: document.getElementById('venue-name').value,
-                          cityProvince: document.getElementById('city-province').value,
-                          district: document.getElementById('district').value,
-                          details: document.getElementById('event-details').value
-                      },
+                      // venue: {
+                      //     name: document.getElementById('venue-name').value,
+                      //     cityProvince: document.getElementById('city-province').value,
+                      //     district: document.getElementById('district').value,
+                      //     details: document.getElementById('event-details').value
+                      // },
+                      venueName: document.getElementById('venue-name').value,
+                      addressProvince: document.getElementById('city-province').value,
+                      addressDetail: document.getElementById('event-details').value,
+                      district: document.getElementById('district').value,
                       
                       // Event details
                       category: document.getElementById('event-category').value,
                       description: document.getElementById('description').value,
-                      startTime: new Date(document.getElementById('start-time').value),
-                      endTime: new Date(document.getElementById('end-time').value),
+                      startDate: new Date(document.getElementById('start-time').value),
+                      endDate: new Date(document.getElementById('end-time').value),
                       
                       // Organizer information
                       organizer: {
@@ -355,7 +359,7 @@
                       },
                       
                       // Ticket information
-                      tickets: tickets.map(ticket => ({
+                      ticketType: tickets.map(ticket => ({
                           name: ticket.name,
                           price: parseFloat(ticket.price),
                           quantity: parseInt(ticket.total),
@@ -377,9 +381,9 @@
                       createdAt: new Date(),
                       updatedAt: new Date()
                   };
-          
+                  console.log('Form data:', formData);
                   // Send data to server
-                  const response = await fetch('/api/events', {
+                  const response = await fetch('/admin', {
                       method: 'POST',
                       headers: {
                           'Content-Type': 'application/json'
