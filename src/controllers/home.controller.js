@@ -7,8 +7,8 @@ const getHomepage = async (req, res) => {
         // console.log('allEvents:', allEvents)
         const events = await EventService.findRecomendedEvents()
 
-        const musicEvents = await EventService.findByCategory({ category: 'Music' })
-        const artEvents = await EventService.findByCategory({ category: 'Art' })
+        const musicEvents = await EventService.findByCategory({category: 'Music'})
+        const artEvents = await EventService.findByCategory({category: 'Art'})
         // const recommendTicketTypes = await TicketTypeService.findByRecommend()
         const newReleaseEvents = await EventService.findByNewRelease()
         // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes
@@ -18,24 +18,23 @@ const getHomepage = async (req, res) => {
         const eventData = MongooseToObjectFunctions.multipleMongooseToObject(allEvents)
         // console.log('eventData:', eventData)
         try {
-                const customer = req.session.customer;
-                res.render('index', {events, musicEvents, artEvents, newReleaseEvents, eventData })
+                res.render('index', {events, musicEvents, artEvents, newReleaseEvents, eventData})
 
         } catch (error) {
-                res.render('index', {events, musicEvents, artEvents, newReleaseEvents, eventData })
+                res.render('index', {events, musicEvents, artEvents, newReleaseEvents, eventData})
         }
-    // return res.render('index')
+        // return res.render('index')
 
-        const recommendTicketTypes = await TicketTypeService.findByRecommend()
-        const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
-        // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes
-        const nowShowing = [recommendTicketTypes[0]].concat(newReleaseTicketTypes.slice(0, 3))
-        try{
-            res.render('index', {events, nowShowing })
-
-    } catch (error) {
-            res.render('index', {events, nowShowing })    }
-
+//         const recommendTicketTypes = await TicketTypeService.findByRecommend()
+//         const newReleaseTicketTypes = await TicketTypeService.findByNewRelease()
+//         // get the first of recommendedTicketTypes and the 3 first of newReleaseTicketTypes
+//         const nowShowing = [recommendTicketTypes[0]].concat(newReleaseTicketTypes.slice(0, 3))
+//         try{
+//             res.render('index', {events, nowShowing })
+//
+//     } catch (error) {
+//             res.render('index', {events, nowShowing })    }
+//
+// }
 }
-
 export default getHomepage
