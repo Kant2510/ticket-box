@@ -67,16 +67,12 @@ router.get('/search', async (req, res) => {
 // Route thêm voucher
 router.post('/add', async (req, res) => {
     try {
+        console.log('Received request body:', req.body); // Log request data
+
         const { voucherName, discountValue, maxDiscount, startDate, endDate, quantity } = req.body;
 
-        if (!voucherName || !discountValue || !maxDiscount || !startDate || !endDate || !quantity) {
-            return res.status(400).json({
-                success: false,
-                message: 'Vui lòng điền đầy đủ thông tin voucher'
-            });
-        }
-
-        const newVoucher = new Voucher({
+        // Log các giá trị nhận được
+        console.log('Parsed values:', {
             voucherName,
             discountValue,
             maxDiscount,
@@ -85,16 +81,78 @@ router.post('/add', async (req, res) => {
             quantity
         });
 
+        // Kiểm tra giá trị null/undefined
+        if (!voucherName || !discountValue || !maxDiscount || !startDate || !endDate || !quantity) {
+            console.log('Missing fields:', {
+                voucherName: !voucherName,
+                discountValue: !discountValue,
+                maxDiscount: !maxDiscount,
+                startDate: !startDate,
+                endDate: !endDate,
+                quantity: !quantity
+            });
+            
+            return res.status(400).json({
+                success: false,
+                message: 'Vui lòng điền đầy đủ thông tin voucher',
+                missingFields: {
+                    voucherName: !voucherName,
+                    discountValue: !discountValue,
+                    maxDiscount: !maxDiscount,
+                    startDate: !startDate,
+                    endDate: !endDate,
+                    quantity: !quantity
+                }
+            });
+        }
+
+        // Validate dữ liệu
+        if (isNaN(discountValue) || discountValue <= 0 || discountValue > 100) {
+            return res.status(400).json({
+                success: false,
+                message: 'Giá trị giảm giá không hợp lệ (phải từ 1-100)'
+            });
+        }
+
+        if (isNaN(maxDiscount) || maxDiscount <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Giảm giá tối đa phải lớn hơn 0'
+            });
+        }
+
+        if (isNaN(quantity) || quantity <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Số lượng phải lớn hơn 0'
+            });
+        }
+
+        const newVoucher = new Voucher({
+            voucherName,
+            discountValue: Number(discountValue),
+            maxDiscount: Number(maxDiscount),
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            quantity: Number(quantity)
+        });
+
+        console.log('Creating new voucher:', newVoucher); // Log voucher object
+
         await newVoucher.save();
+        console.log('Voucher saved successfully'); // Log success
+
         res.status(201).json({
             success: true,
             message: 'Tạo voucher thành công!',
             voucher: newVoucher
         });
     } catch (err) {
+        console.error('Error creating voucher:', err); // Log error details
         res.status(500).json({
             success: false,
-            message: 'Lỗi khi tạo voucher: ' + err.message
+            message: 'Lỗi khi tạo voucher: ' + err.message,
+            error: err.stack
         });
     }
 });
