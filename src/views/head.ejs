@@ -42,8 +42,13 @@
     <script>
         var eventData = [];
         document.addEventListener("DOMContentLoaded", () => {
+            const allEventsElement = document.getElementById("all-events");
+            if (!allEventsElement) {
+                console.error("Element with id 'all-events' not found.");
+                return;
+            }
             eventData = JSON.parse(
-                decodeURIComponent(document.getElementById("all-events").dataset.eventInfo)
+                decodeURIComponent(allEventsElement.dataset.eventInfo)
             );
             console.log(eventData);
         });
