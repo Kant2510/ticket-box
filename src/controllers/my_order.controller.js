@@ -15,7 +15,7 @@ const getMyOrder = async (req, res, next) => {
                     // Tìm ticket bất kì của order
                     const _ticket = await TicketModel.findById(order.orderDetails[0]).lean();
                     // Tìm event từ ticketType
-                    const _event = await EventModel.find({ ticketType: _ticket.TicketTypeID}).limit(1).lean();
+                    const _event = await EventModel.find({ 'ticketType.ticketTypeId': _ticket.TicketTypeID}).limit(1).lean();
                     return _event[0];
                 })
             );
