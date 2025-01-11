@@ -14,7 +14,7 @@ const configViewEngine = (app) => {
     app.use(compression())
     // HTTP logger
     app.use(morgan('tiny'))
-    app.use(express.urlencoded({ extended: true })) // For parsing form data
+    app.use(express.urlencoded({ extended: true, limit: '50mb' })) // For parsing form data
     app.use(
         session({
             secret: process.env.SESSION_SECRET || 'your_secret_key',
@@ -31,7 +31,8 @@ const configViewEngine = (app) => {
             },
         }),
     )
-    app.use(express.json()) // Để xử lý dữ liệu JSON
+    // app.use(express.json()) // Để xử lý dữ liệu JSON
+    app.use(express.json({limit: '50mb'}));
     app.use((req, res, next) => {
         console.log(`${req.method} ${req.url}`)
         next()

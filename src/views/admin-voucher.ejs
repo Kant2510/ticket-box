@@ -18,14 +18,15 @@
       padding: 0;
     }
 
-    .navigation {
+    .navigation-voucher {
+      margin-top: 50px;
       padding: 20px;
       background-color: #343a40;
       display: flex;
       gap: 10px;
     }
 
-    .navigation button {
+    .navigation-voucher button {
       background-color: #495057;
       color: white;
       border: none;
@@ -34,7 +35,7 @@
       cursor: pointer;
     }
 
-    .navigation button:hover {
+    .navigation-voucher button:hover {
       background-color: #6c757d;
     }
 
@@ -149,7 +150,7 @@
 <body>
   <%- include('admin-head') -%>
 
-  <div class="navigation">
+  <div class="navigation-voucher">
     <button onclick="showCreateVoucher()">Create Voucher</button>
     <button onclick="showVoucherList()">Voucher List</button>
   </div>
