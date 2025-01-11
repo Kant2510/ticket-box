@@ -65,9 +65,9 @@ const updateOrderSummary = () => {
 
   const voucherCode = document.getElementById('voucher-input').value;
   const vouchers = voucherData;
-  const voucher = vouchers.find(v => v.name === voucherCode);
+  const voucher = vouchers.find(v => v.voucherName === voucherCode);
   if (voucher) {
-      const discount = voucher.discount;
+      const discount = voucher.discountValue;
       const totalPrice = parseInt(totalPriceElement.textContent.replace('₫', '').replace(/,/g, ''), 10);
       const finalPrice = totalPrice * (1 - discount / 100);
       document.getElementById('total-discount').textContent = `-${(discount * totalPrice / 100).toLocaleString()}₫`;
@@ -168,9 +168,9 @@ document.getElementById('apply-voucher-btn').addEventListener('click', (event) =
   event.preventDefault();
   const voucherCode = document.getElementById('voucher-input').value;
   const vouchers = voucherData;
-  const voucher = vouchers.find(v => v.name === voucherCode);
+  const voucher = vouchers.find(v => v.voucherName === voucherCode);
   if (voucher) {
-      const discount = voucher.discount;
+      const discount = voucher.discountValue;
       const totalPrice = parseInt(totalPriceElement.textContent.replace('₫', '').replace(/,/g, ''), 10);
       const finalPrice = totalPrice * (1 - discount / 100);
       document.getElementById('total-discount').textContent = `-${(discount * totalPrice / 100).toLocaleString()}₫`;

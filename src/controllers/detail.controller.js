@@ -3,6 +3,7 @@ import event from '../models/event.model.js'
 import MongooseToObjectFunctions from '../utils/mongooseToObjectFunctions.js';
 import ticketType from '../models/ticket_type.model.js'
 import { faker } from '@faker-js/faker'
+import voucherModel from '../models/voucher.model.js';
 
 class EventDetailController {
     getEventDetail = async (req, res, next) => {                
@@ -64,11 +65,15 @@ class EventDetailController {
             if (!_ticketTypes) {
                 return res.status(404).send('Ticket types not found');
             }
-            const vouchers = Array.from({ length: 5 }).map(() => ({
-                id: faker.datatype.uuid,
-                name: faker.string.alphanumeric(5),
-                discount: faker.number.int({min: 5, max: 50}), // Giảm giá ngẫu nhiên từ 5% đến 50%
-            }))
+            // const vouchers = Array.from({ length: 5 }).map(() => ({
+            //     id: faker.datatype.uuid,
+            //     name: faker.string.alphanumeric(5),
+            //     discount: faker.number.int({min: 5, max: 50}), // Giảm giá ngẫu nhiên từ 5% đến 50%
+            // }))
+            var vouchers = await voucherModel.find();
+            // get vouchers with end date > now
+            const now = new Date();
+            vouchers = vouchers.filter(voucher => voucher.endDate > now);
             res.render('eventDetail/booking.ejs', {
                 customer: req.session.customer,
                 event: MongooseToObjectFunctions.mongooseToObject(_event),

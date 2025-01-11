@@ -194,14 +194,14 @@
             </div>
   
             <div class="pagination">
-                <button id="prevPage" onclick="loadPage(<%= currentPage - 1 %>)" 
+                <button id="prevPage" onclick="loadPage('<%= currentPage - 1 %>')" 
                         <%= !hasPrevPage ? 'disabled' : '' %>>
                     Previous
                 </button>
                 
                 <span>Page <%= currentPage %> of <%= totalPages %></span>
                 
-                <button id="nextPage" onclick="loadPage(<%= currentPage + 1 %>)"
+                <button id="nextPage" onclick="loadPage('<%= currentPage + 1 %>')"
                         <%= !hasNextPage ? 'disabled' : '' %>>
                     Next
                 </button>
