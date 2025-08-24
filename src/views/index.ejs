@@ -352,12 +352,12 @@
                   </div>
                 </div>
                 <div class="text-center p-4">
-                  <a class="d-block h5 mb-2" href="/detail" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><%= event.title %></a>
+                  <a class="d-block h5 mb-2" href="/events/<%= event._id %>" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><%= event.title %></a>
                   <p class="text-clamp" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><%= event.addressDetail %>, <%= event.addressProvince %></p>
                 </div>
                 <div class="d-flex border-top">
                   <small class="w-50 text-center border-end py-2">
-                    <a class="text-body" href="/detail/<%= event._id %>"
+                    <a class="text-body" href="/events/<%= event._id %>"
                     ><i class="fa fa-info circle text-primary me-2"></i>View
                       detail</a
                     >

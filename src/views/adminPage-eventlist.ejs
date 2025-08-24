@@ -218,7 +218,7 @@
                 // Hiển thị loading state
                 eventList.style.opacity = '0.5';
                 
-                const response = await fetch(`/adminPage-eventlist?page=${pageNumber}`, {
+                const response = await fetch(`/admin/events?page=${pageNumber}`, {
                     headers: {
                         'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest'

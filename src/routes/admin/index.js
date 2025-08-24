@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Các route khác giữ nguyên
 router.use('/admin', eventRouter);
-router.use('/adminPage-eventlist', eventListRouter);
+router.use('/admin-events', eventListRouter);
 router.use('/admin-policy', policyRouter);
 
 // Chuyển /admin-voucher route lên trước để ưu tiên render page
