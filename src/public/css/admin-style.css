@@ -1,9 +1,10 @@
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  .navbar {
+}
+.navbar {
     height: 55px;
     color: #fff;
     background-color: black;
@@ -16,8 +17,8 @@ body, html {
     left: 0;
     right: 0;
     z-index: 10;
-  }
-  .create-process {
+}
+.create-process {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -28,25 +29,30 @@ body, html {
     font-weight: bold;
     margin-top: 50px;
     position: fixed;
-  }
-  .create-process .step {
+}
+.create-process .step {
     padding: 10px 20px;
     cursor: pointer;
-  }
-  .create-process .step.active {
+}
+.create-process .step.active {
     border-bottom: 3px solid white;
     color: white;
-  }
-  .create-process .step:not(.active):hover {
+}
+.create-process .step:not(.active):hover {
     color: #ccc;
-  }
-  .admin-container {
+}
+.admin-container {
     padding: 130px 20px 20px 20px;
-  }
-  .Form2, .Form3 {
+}
+.Form2,
+.Form3 {
     display: none;
-  }
-  select, input[type="text"],input[type="datetime-local"],textarea, input[type="number"] {
+}
+select,
+input[type='text'],
+input[type='datetime-local'],
+textarea,
+input[type='number'] {
     margin-bottom: 10px;
     font-size: 12px;
     padding: 8px;
@@ -54,64 +60,64 @@ body, html {
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
-  }
+}
 
-  input[type="file"] {
+input[type='file'] {
     font-size: 12px;
-  }
-  .Form1 button:hover, .Form2 button:hover, .Form3 button:hover {
+}
+.Form1 button:hover,
+.Form2 button:hover,
+.Form3 button:hover {
     background-color: #0056b3;
-  }
-  .upload {
+}
+.upload {
     background-color: white;
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
-  }
-  .event-name {
+}
+.event-name {
     margin-top: 20px;
-  }
-  label {
+}
+label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     font-size: 14px;
-  }
-  .event-image {
+}
+.event-image {
     display: flex;
     justify-content: space-between;
-  }
-  .event-logo, .event-banner {
+}
+.event-logo,
+.event-banner {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 190px;
+    width: 450px;
     height: 250px;
     border: 2px solid black;
     border-radius: 10px;
     margin-bottom: 10px;
     background-color: #f9f9f9;
-  }
-  .event-banner {
-    width: 450px;
-  }
-  .logo-preview{
+}
+.logo-preview {
     width: 170px;
     height: 250px;
     object-fit: contain;
-  }
- 
-  
-  #next-btn:hover, #back-btn:hover {
+}
+
+#next-btn:hover,
+#back-btn:hover {
     background-color: #003f73;
-  }
-  .form-group {
+}
+.form-group {
     display: flex;
     align-items: center;
-    gap:10px;
+    gap: 10px;
     width: 100%;
-  }
-  .add-ticket-btn {
+}
+.add-ticket-btn {
     background-color: #fff;
     width: 100%;
     padding: 10px 20px;
@@ -119,19 +125,19 @@ body, html {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-  }
-  
-  .add-ticket-btn:hover {
+}
+
+.add-ticket-btn:hover {
     background-color: #0056b3;
-  }
-  .add-ticket-form {
+}
+.add-ticket-form {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
-  }
-  .save-btn {
+}
+.save-btn {
     background-color: #28a745;
     color: white;
     padding: 5px 15px;
@@ -139,11 +145,11 @@ body, html {
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-  }
-  .save-btn:hover {
+}
+.save-btn:hover {
     background-color: #218838;
-  }
-  .cancel-btn {
+}
+.cancel-btn {
     background-color: #dc3545;
     color: white;
     padding: 5px 15px;
@@ -151,20 +157,21 @@ body, html {
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
-  }
-  .cancel-btn:hover {
+}
+.cancel-btn:hover {
     background-color: #c82333;
-  }
-  #organizer-info{
+}
+#organizer-info {
     width: 100%;
-  }
-  .form-navigation{
+}
+.form-navigation {
     display: flex;
     justify-content: flex-end;
     width: 100%;
     gap: 10px;
-  }
-  #next-btn, #back-btn {
+}
+#next-btn,
+#back-btn {
     padding: 5px 10px;
     background-color: #0056b3;
     color: white;
@@ -173,28 +180,30 @@ body, html {
     cursor: pointer;
     font-size: 12px;
     margin-top: 10px;
-  }
-  .ticket-item{
+}
+.ticket-item {
     background-color: black;
     width: 100%;
     padding: 10px;
-    margin-top:20px;
+    margin-top: 20px;
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  .ticket-type-name,.ticket-type-quantity,.ticket-type-price{
+}
+.ticket-type-name,
+.ticket-type-quantity,
+.ticket-type-price {
     color: white;
     font-weight: normal;
-  }
-  .ticket-type-name{
+}
+.ticket-type-name {
     font-weight: bold;
-  }
-  .create-btn a {
+}
+.create-btn a {
     text-decoration: none;
     color: white;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     padding: 10px 20px;
     border-radius: 5px;
 }
@@ -207,7 +216,7 @@ body, html {
 
 .event-item {
     width: 170px;
-    height: 240px; 
+    height: 240px;
     box-sizing: border-box;
     background-color: #f4f4f4;
     border: 1px solid #ddd;
@@ -232,24 +241,24 @@ body, html {
 /* voucher */
 /* list */
 .pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 .pagination button {
-  padding: 10px 20px;
-  margin: 0 5px;
-  background-color: #f1f1f1;
-  border: 1px solid #ddd;
-  cursor: pointer;
+    padding: 10px 20px;
+    margin: 0 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    cursor: pointer;
 }
 .pagination button:hover {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 /* Màu sắc cho các trạng thái */
 .on-sale {
-  color: green;
+    color: green;
 }
 .sold-out {
-  color: gray;
+    color: gray;
 }

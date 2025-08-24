@@ -1,11 +1,7 @@
 'use strict'
-
-import { OkResponse } from '../core/success.response.js'
 import { faker } from '@faker-js/faker'
 import Event from '../models/event.model.js'
 import TicketType from '../models/ticket_type.model.js'
-// import { BadRequestResponse } from '../core/error.response.js'
-// import OrderService from '../services/order.service.js'
 
 // TODO: API login
 const getCart = async (req, res) => {
@@ -18,13 +14,14 @@ const getCart = async (req, res) => {
         }
     
         const _ticketTypes = await Promise.all(
-            _event.ticketType.map(async (_ticketTypeID) => {
-                return TicketType.findOne({ ticketTypeID: _ticketTypeID });
+            _event.ticketType.map(async (_ticketType) => {
+                return TicketType.findOne({ ticketTypeID: _ticketType.ticketTypeId });
             })
         );
         if (!_ticketTypes) {
             return res.status(404).send('Ticket types not found');
         }
+        console.log(_ticketTypes)
         // const tickets = Array.from({ length: 5 }).map(() => ({
         //     id: faker.datatype.uuid,
         //     image: faker.image.avatarGitHub(), // Ảnh ngẫu nhiên

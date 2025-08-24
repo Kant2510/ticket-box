@@ -184,7 +184,7 @@ class AccessService {
       throw new UnauthorizedRequest('Shop is not registered')
     }
 
-    const tokens = await createTokenPair({ userId, email }, holderToken.publicKey, holderToken.privateKey)
+    const tokens = createTokenPair({ userId, email }, holderToken.publicKey, holderToken.privateKey)
 
     // TODO: Update new refreshToken and refreshTokenUsed
     // TODO Atomistic update

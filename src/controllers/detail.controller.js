@@ -1,8 +1,6 @@
-import mongoose from 'mongoose'
 import event from '../models/event.model.js'
 import MongooseToObjectFunctions from '../utils/mongooseToObjectFunctions.js';
 import ticketType from '../models/ticket_type.model.js'
-import { faker } from '@faker-js/faker'
 import voucherModel from '../models/voucher.model.js';
 
 class EventDetailController {

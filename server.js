@@ -1,16 +1,16 @@
 import dotenv from 'dotenv'
-dotenv.config()
 import app from './src/app.js'
-const PORT =  3000;
+dotenv.config()
+
+const PORT = process.env.PORT || 3000
 
 const server = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`)
 })
 
-process.on('SIGINT', (err, promise) => {
+process.on('SIGINT', () => {
     server.close(() => {
-        console.log(`Server stopped`);
-        process.exit(1);
+        console.log(`Server stopped`)
+        process.exit(1)
     })
 })
-

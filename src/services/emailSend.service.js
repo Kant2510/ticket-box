@@ -1,16 +1,17 @@
-import nodemailer from 'nodemailer'; // Import nodemailer
+import nodemailer from 'nodemailer';
+
 // Function to send verification email
 async function sendVerificationEmail(email, code) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'prairie2103@gmail.com', // Your email
-        pass: 'zjcp skco jaqt qeub' // Your email password or app password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
       }
     });
   
     const mailOptions = {
-      from: 'prairie2103@gmail.com',
+      from: process.env.EMAIL_USER,
       to: email,
       subject: 'Verification Code',
       text: `Your verification code is: ${code}`
@@ -26,4 +27,4 @@ async function sendVerificationEmail(email, code) {
     }
   }
   
-    export default sendVerificationEmail;
+export default sendVerificationEmail;
